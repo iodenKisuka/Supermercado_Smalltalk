@@ -69,6 +69,9 @@ agregarProductoCarritoDLCS: idproducto unidad: unidad
 CargarProductoAcarrito:unProducto
 listadeProducto add:unProducto.!
 
+CargarProductoAcarrito2:unProducto unidad:unidada
+listadeProducto add:unProducto.!
+
 iniCarrito:idPersona
 precioTotal := 0.
 idpersona :=idPersona.
@@ -82,7 +85,19 @@ listadeProducto :=Dictionary new.
 datosdeSupermercado:=supermercado.!
 
 listarCarrito
-!
+|unprod cant|
+listadeProducto do: [:element | 
+cant:= (listadeProducto occurrencesOf: element ) printString .
+
+Transcript
+show: 'identificador del producto:',element ,' cantidad: ',cant ;cr
+]
+
+"listadeProducto do : [:contador | unprod := (listadeProducto at: contador). 
+cont:=contador printString.
+
+cant:= listadeProducto occurrencesOf: unprod.
+    Transcript show: 'identificador de producto:  ',unprod,' cantidad comparda: ',cant ;cr ]"!
 
 quitarProductoCarrito: idproducto
 	| esta nuevacantidad nombre cantidad unproducto |
@@ -117,6 +132,7 @@ verCarrito
 !CarritodeCompras categoriesFor: #agregarProductoCarrito:unidad:!public! !
 !CarritodeCompras categoriesFor: #agregarProductoCarritoDLCS:unidad:!public! !
 !CarritodeCompras categoriesFor: #CargarProductoAcarrito:!public! !
+!CarritodeCompras categoriesFor: #CargarProductoAcarrito2:unidad:!public! !
 !CarritodeCompras categoriesFor: #iniCarrito:!public! !
 !CarritodeCompras categoriesFor: #iniCarrito:cliente:!public! !
 !CarritodeCompras categoriesFor: #listarCarrito!public! !
@@ -128,8 +144,8 @@ verCarrito
 crearCarrito:idcliente
 ^(self new) iniCarrito: idcliente.!
 
-crearCarrito:supermercado cliente: idcliente
+crearCarritoDLCS:supermercado cliente: idcliente
 ^(self new) iniCarrito: supermercado cliente: idcliente.! !
 !CarritodeCompras class categoriesFor: #crearCarrito:!public! !
-!CarritodeCompras class categoriesFor: #crearCarrito:cliente:!public! !
+!CarritodeCompras class categoriesFor: #crearCarritoDLCS:cliente:!public! !
 

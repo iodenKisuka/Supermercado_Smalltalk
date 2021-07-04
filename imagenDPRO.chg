@@ -17412,3 +17412,848 @@ s llamarMenuPrincipal.
 menu:= Prompter prompt:'Ingrese un numero , 0 para salir'.
 ].!
 
+!CarritodeCompras class methodsFor!
+crearCarritoDLCS:supermercado cliente: idcliente
+^(self new) iniCarrito: supermercado cliente: idcliente.! !
+!CarritodeCompras class categoriesFor: #crearCarritoDLCS:cliente:!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+"carrito:=CarritodeCompras."
+Transcript clear.
+s verClientes .
+ClienteSeleecionado:= Prompter prompt: 'Seleccione un cliente'.
+Transcript clear.
+s llamarMenuPrincipal.
+carrito:= CarritodeCompras crearCarrito: ClienteSeleecionado.
+
+s listarProductosDisponible .
+
+
+menu:= Prompter prompt:'Ingrese un opcion'.
+
+[menu~='0'] whileTrue:[
+		Transcript clear.
+		s llamarMenuPrincipal.
+			menu = '1' ifTrue: [ Transcript clear.
+		s listarProductosDisponible .
+		[ Pseleccionado~='0'] whileTrue:[
+					Transcript clear.
+					s listarProductosDisponible .
+					Pseleccionado:= Prompter prompt: 'Ingrese una opcion, 0 para salir y proceder con 	la compra'.
+					Transcript show:'----------------------------------------------'.
+					
+		"s listarProductosCarritoIdentificador."
+		"s buscarElProductoEnSupermercado: Pseleccionado."
+		prod := s buscarElProductoEnSupermercado: Pseleccionado.
+		carrito CargarProductoAcarrito:prod.
+		"carrito verProductosEnCarrito."
+		Transcript clear.
+		].].
+			menu = '2' ifTrue: [ carrito verCarrito inspect ].
+			menu = '3' ifTrue: [ Prompter prompt: '3' ].
+			menu = '4' ifTrue: [ Prompter prompt: '4'].
+Transcript clear.
+s llamarMenuPrincipal.
+menu:= Prompter prompt:'Ingrese un numero , 0 para salir'.
+].!
+
+CarritodeCompras class removeSelector: #crearCarrito:cliente: ifAbsent: []!
+
+!CarritodeCompras methodsFor!
+CargarProductoAcarrito2:unProducto unidad:unidada
+listadeProducto add:unProducto.! !
+!CarritodeCompras categoriesFor: #CargarProductoAcarrito2:unidad:!public! !
+
+!Supermercado methodsFor!
+verClientes
+|client cont|
+1 to: clientes size
+        do: 
+            [:contador | client := (clientes at: contador).
+cont:=contador printString.
+    Transcript show: cont,' ',client verNombre,' ',client verApellido ;cr ]! !
+!Supermercado categoriesFor: #verClientes!public! !
+
+!CarritodeCompras methodsFor!
+ListarProductosCarrito
+|unprod cant|
+1 to: listadeProducto size
+        do: 
+            [:contador | unprod := (listadeProducto at: contador).
+"cont:=contador printString."
+cant:= listadeProducto occurrencesOf: unprod.
+    Transcript show: 'identificador de producto:  ',unprod,' cantidad comparda: ',cant ;cr ]! !
+!CarritodeCompras categoriesFor: #ListarProductosCarrito!public! !
+
+!CarritodeCompras methodsFor!
+listarProductosCarrito
+|unprod cant|
+1 to: listadeProducto size
+        do: 
+            [:contador | unprod := (listadeProducto at: contador).
+"cont:=contador printString."
+cant:= listadeProducto occurrencesOf: unprod.
+    Transcript show: 'identificador de producto:  ',unprod,' cantidad comparda: ',cant ;cr ]! !
+!CarritodeCompras categoriesFor: #listarProductosCarrito!public! !
+
+CarritodeCompras removeSelector: #ListarProductosCarrito ifAbsent: []!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+"carrito:=CarritodeCompras."
+Transcript clear.
+s verClientes .
+"ClienteSeleecionado:= Prompter prompt: 'Seleccione un cliente'."
+Transcript clear.
+"s llamarMenuPrincipal."
+carrito:= CarritodeCompras crearCarrito: '1'.
+
+"------Se simula una compra ------"
+carrito CargarProductoAcarrito: '1'.
+carrito CargarProductoAcarrito: '1'.
+carrito listarCarrito.!
+
+CarritodeCompras removeSelector: #listarCarrito ifAbsent: []!
+
+!CarritodeCompras methodsFor!
+listarCarrito
+|unprod cant|
+1 to: listadeProducto size
+        do: 
+            [:contador | unprod := (listadeProducto at: contador).
+"cont:=contador printString."
+cant:= listadeProducto occurrencesOf: unprod.
+    Transcript show: 'identificador de producto:  ',unprod,' cantidad comparda: ',cant ;cr ]! !
+!CarritodeCompras categoriesFor: #listarCarrito!public! !
+
+CarritodeCompras removeSelector: #listarProductosCarrito ifAbsent: []!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+"carrito:=CarritodeCompras."
+Transcript clear.
+s verClientes .
+"ClienteSeleecionado:= Prompter prompt: 'Seleccione un cliente'."
+Transcript clear.
+"s llamarMenuPrincipal."
+carrito:= CarritodeCompras crearCarrito: '1'.
+
+"------Se simula una compra ------"
+carrito CargarProductoAcarrito: '1'.
+carrito CargarProductoAcarrito: '1'.
+carrito listarCarrito.!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+"carrito:=CarritodeCompras."
+Transcript clear.
+s verClientes .
+"ClienteSeleecionado:= Prompter prompt: 'Seleccione un cliente'."
+Transcript clear.
+"s llamarMenuPrincipal."
+carrito:= CarritodeCompras crearCarrito: '1'.
+
+"------Se simula una compra ------"
+carrito CargarProductoAcarrito: '1'.
+carrito CargarProductoAcarrito: '1'.
+carrito listarCarrito!
+
+!CarritodeCompras methodsFor!
+listarCarrito
+|unprod cant|
+^ listadeProducto size.
+"1 to: listadeProducto size
+        do: 
+            [:contador | unprod := (listadeProducto at: contador). "
+"cont:=contador printString."
+"
+cant:= listadeProducto occurrencesOf: unprod.
+    Transcript show: 'identificador de producto:  ',unprod,' cantidad comparda: ',cant ;cr ]"! !
+!CarritodeCompras categoriesFor: #listarCarrito!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+"carrito:=CarritodeCompras."
+Transcript clear.
+s verClientes .
+"ClienteSeleecionado:= Prompter prompt: 'Seleccione un cliente'."
+Transcript clear.
+"s llamarMenuPrincipal."
+carrito:= CarritodeCompras crearCarrito: '1'.
+
+"------Se simula una compra ------"
+carrito CargarProductoAcarrito: '1'.
+carrito CargarProductoAcarrito: '1'.
+carrito listarCarrito!
+
+!CarritodeCompras methodsFor!
+listarCarrito
+|unprod cant|
+
+listadeProducto
+
+"listadeProducto do : [:contador | unprod := (listadeProducto at: contador). 
+cont:=contador printString.
+
+cant:= listadeProducto occurrencesOf: unprod.
+    Transcript show: 'identificador de producto:  ',unprod,' cantidad comparda: ',cant ;cr ]"! !
+!CarritodeCompras categoriesFor: #listarCarrito!public! !
+
+!CarritodeCompras methodsFor!
+listarCarrito
+|unprod cant|
+listadeProducto do: [:element | 
+cant:= (listadeProducto occurrencesOf: element ) printString .
+
+
+]
+
+"listadeProducto do : [:contador | unprod := (listadeProducto at: contador). 
+cont:=contador printString.
+
+cant:= listadeProducto occurrencesOf: unprod.
+    Transcript show: 'identificador de producto:  ',unprod,' cantidad comparda: ',cant ;cr ]"! !
+!CarritodeCompras categoriesFor: #listarCarrito!public! !
+
+!CarritodeCompras methodsFor!
+listarCarrito
+|unprod cant|
+listadeProducto do: [:element | 
+cant:= (listadeProducto occurrencesOf: element ) printString .
+
+
+]
+
+"listadeProducto do : [:contador | unprod := (listadeProducto at: contador). 
+cont:=contador printString.
+
+cant:= listadeProducto occurrencesOf: unprod.
+    Transcript show: 'identificador de producto:  ',unprod,' cantidad comparda: ',cant ;cr ]"! !
+!CarritodeCompras categoriesFor: #listarCarrito!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+"carrito:=CarritodeCompras."
+Transcript clear.
+s verClientes .
+"ClienteSeleecionado:= Prompter prompt: 'Seleccione un cliente'."
+Transcript clear.
+"s llamarMenuPrincipal."
+carrito:= CarritodeCompras crearCarrito: '1'.
+
+"------Se simula una compra ------"
+carrito CargarProductoAcarrito: '1'.
+carrito CargarProductoAcarrito: '1'.
+carrito listarCarrito!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+"carrito:=CarritodeCompras."
+Transcript clear.
+s verClientes .
+"ClienteSeleecionado:= Prompter prompt: 'Seleccione un cliente'."
+Transcript clear.
+"s llamarMenuPrincipal."
+carrito:= CarritodeCompras crearCarrito: '1'.
+
+"------Se simula una compra ------"
+carrito CargarProductoAcarrito: '1'.
+carrito CargarProductoAcarrito: '1'.
+carrito listarCarrito!
+
+!CarritodeCompras methodsFor!
+listarCarrito
+|unprod cant|
+listadeProducto do: [:element | 
+cant:= (listadeProducto occurrencesOf: element ) printString .
+^cant.
+
+]
+
+"listadeProducto do : [:contador | unprod := (listadeProducto at: contador). 
+cont:=contador printString.
+
+cant:= listadeProducto occurrencesOf: unprod.
+    Transcript show: 'identificador de producto:  ',unprod,' cantidad comparda: ',cant ;cr ]"! !
+!CarritodeCompras categoriesFor: #listarCarrito!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+"carrito:=CarritodeCompras."
+Transcript clear.
+s verClientes .
+"ClienteSeleecionado:= Prompter prompt: 'Seleccione un cliente'."
+Transcript clear.
+"s llamarMenuPrincipal."
+carrito:= CarritodeCompras crearCarrito: '1'.
+
+"------Se simula una compra ------"
+carrito CargarProductoAcarrito: '1'.
+carrito CargarProductoAcarrito: '1'.
+carrito listarCarrito!
+
+!CarritodeCompras methodsFor!
+listarCarrito
+|unprod cant|
+listadeProducto do: [:element | 
+cant:= (listadeProducto occurrencesOf: element ) printString .
+^cant.
+Transcript
+show: 'identificador',cant.
+]
+
+"listadeProducto do : [:contador | unprod := (listadeProducto at: contador). 
+cont:=contador printString.
+
+cant:= listadeProducto occurrencesOf: unprod.
+    Transcript show: 'identificador de producto:  ',unprod,' cantidad comparda: ',cant ;cr ]"! !
+!CarritodeCompras categoriesFor: #listarCarrito!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+"carrito:=CarritodeCompras."
+Transcript clear.
+s verClientes .
+"ClienteSeleecionado:= Prompter prompt: 'Seleccione un cliente'."
+Transcript clear.
+"s llamarMenuPrincipal."
+carrito:= CarritodeCompras crearCarrito: '1'.
+
+"------Se simula una compra ------"
+carrito CargarProductoAcarrito: '1'.
+carrito CargarProductoAcarrito: '1'.
+carrito listarCarrito!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+"carrito:=CarritodeCompras."
+Transcript clear.
+s verClientes .
+"ClienteSeleecionado:= Prompter prompt: 'Seleccione un cliente'."
+Transcript clear.
+"s llamarMenuPrincipal."
+carrito:= CarritodeCompras crearCarrito: '1'.
+
+"------Se simula una compra ------"
+carrito CargarProductoAcarrito: '1'.
+carrito CargarProductoAcarrito: '1'.
+carrito listarCarrito!
+
+!CarritodeCompras methodsFor!
+listarCarrito
+|unprod cant|
+listadeProducto do: [:element | 
+cant:= (listadeProducto occurrencesOf: element ) printString .
+
+Transcript
+show: 'identificador',cant.
+]
+
+"listadeProducto do : [:contador | unprod := (listadeProducto at: contador). 
+cont:=contador printString.
+
+cant:= listadeProducto occurrencesOf: unprod.
+    Transcript show: 'identificador de producto:  ',unprod,' cantidad comparda: ',cant ;cr ]"! !
+!CarritodeCompras categoriesFor: #listarCarrito!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+"carrito:=CarritodeCompras."
+Transcript clear.
+s verClientes .
+"ClienteSeleecionado:= Prompter prompt: 'Seleccione un cliente'."
+Transcript clear.
+"s llamarMenuPrincipal."
+carrito:= CarritodeCompras crearCarrito: '1'.
+
+"------Se simula una compra ------"
+carrito CargarProductoAcarrito: '1'.
+carrito CargarProductoAcarrito: '1'.
+carrito listarCarrito!
+
+!CarritodeCompras methodsFor!
+listarCarrito
+|unprod cant|
+listadeProducto do: [:element | 
+cant:= (listadeProducto occurrencesOf: element ) printString .
+
+Transcript
+show: 'identificador',cant ;cr
+]
+
+"listadeProducto do : [:contador | unprod := (listadeProducto at: contador). 
+cont:=contador printString.
+
+cant:= listadeProducto occurrencesOf: unprod.
+    Transcript show: 'identificador de producto:  ',unprod,' cantidad comparda: ',cant ;cr ]"! !
+!CarritodeCompras categoriesFor: #listarCarrito!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+"carrito:=CarritodeCompras."
+Transcript clear.
+s verClientes .
+"ClienteSeleecionado:= Prompter prompt: 'Seleccione un cliente'."
+Transcript clear.
+"s llamarMenuPrincipal."
+carrito:= CarritodeCompras crearCarrito: '1'.
+
+"------Se simula una compra ------"
+carrito CargarProductoAcarrito: '1'.
+carrito CargarProductoAcarrito: '1'.
+carrito listarCarrito!
+
+!CarritodeCompras methodsFor!
+listarCarrito
+|unprod cant|
+listadeProducto do: [:element | 
+cant:= (listadeProducto occurrencesOf: element ) printString .
+
+Transcript
+show: 'identificador :',element ,cant ;cr
+]
+
+"listadeProducto do : [:contador | unprod := (listadeProducto at: contador). 
+cont:=contador printString.
+
+cant:= listadeProducto occurrencesOf: unprod.
+    Transcript show: 'identificador de producto:  ',unprod,' cantidad comparda: ',cant ;cr ]"! !
+!CarritodeCompras categoriesFor: #listarCarrito!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+"carrito:=CarritodeCompras."
+Transcript clear.
+s verClientes .
+"ClienteSeleecionado:= Prompter prompt: 'Seleccione un cliente'."
+Transcript clear.
+"s llamarMenuPrincipal."
+carrito:= CarritodeCompras crearCarrito: '1'.
+
+"------Se simula una compra ------"
+carrito CargarProductoAcarrito: '1'.
+carrito CargarProductoAcarrito: '1'.
+carrito listarCarrito!
+
+!CarritodeCompras methodsFor!
+listarCarrito
+|unprod cant|
+listadeProducto do: [:element | 
+cant:= (listadeProducto occurrencesOf: element ) printString .
+
+Transcript
+show: 'identificador :',element ,' cantidad: ',cant ;cr
+]
+
+"listadeProducto do : [:contador | unprod := (listadeProducto at: contador). 
+cont:=contador printString.
+
+cant:= listadeProducto occurrencesOf: unprod.
+    Transcript show: 'identificador de producto:  ',unprod,' cantidad comparda: ',cant ;cr ]"! !
+!CarritodeCompras categoriesFor: #listarCarrito!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+"carrito:=CarritodeCompras."
+Transcript clear.
+s verClientes .
+"ClienteSeleecionado:= Prompter prompt: 'Seleccione un cliente'."
+Transcript clear.
+"s llamarMenuPrincipal."
+carrito:= CarritodeCompras crearCarrito: '1'.
+
+"------Se simula una compra ------"
+carrito CargarProductoAcarrito: '1'.
+carrito CargarProductoAcarrito: '1'.
+carrito listarCarrito!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+"carrito:=CarritodeCompras."
+Transcript clear.
+s verClientes .
+"ClienteSeleecionado:= Prompter prompt: 'Seleccione un cliente'."
+Transcript clear.
+"s llamarMenuPrincipal."
+carrito:= CarritodeCompras crearCarrito: '1'.
+
+"------Se simula una compra ------"
+carrito CargarProductoAcarrito: '1'.
+carrito CargarProductoAcarrito: '1'.
+carrito listarCarrito!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+"carrito:=CarritodeCompras."
+Transcript clear.
+s verClientes .
+"ClienteSeleecionado:= Prompter prompt: 'Seleccione un cliente'."
+Transcript clear.
+"s llamarMenuPrincipal."
+carrito:= CarritodeCompras crearCarrito: '1'.
+
+"------Se simula una compra ------"
+carrito CargarProductoAcarrito: '1'.
+carrito CargarProductoAcarrito: '1'.
+carrito listarCarrito!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+"carrito:=CarritodeCompras."
+Transcript clear.
+s verClientes .
+"ClienteSeleecionado:= Prompter prompt: 'Seleccione un cliente'."
+Transcript clear.
+"s llamarMenuPrincipal."
+carrito:= CarritodeCompras crearCarrito: '1'.
+
+"------Se simula una compra ------"
+carrito CargarProductoAcarrito: '1'.
+carrito CargarProductoAcarrito: '1'.
+carrito listarCarrito!
+
+"19:38:38, 04 July 2021: Image saved"!
+
+!CarritodeCompras methodsFor!
+listarCarrito
+|unprod cant|
+listadeProducto do: [:element | 
+cant:= (listadeProducto occurrencesOf: element ) printString .
+
+Transcript
+show: 'identificador del producto:',element ,' cantidad: ',cant ;cr
+]
+
+"listadeProducto do : [:contador | unprod := (listadeProducto at: contador). 
+cont:=contador printString.
+
+cant:= listadeProducto occurrencesOf: unprod.
+    Transcript show: 'identificador de producto:  ',unprod,' cantidad comparda: ',cant ;cr ]"! !
+!CarritodeCompras categoriesFor: #listarCarrito!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+"carrito:=CarritodeCompras."
+Transcript clear.
+s verClientes .
+"ClienteSeleecionado:= Prompter prompt: 'Seleccione un cliente'."
+Transcript clear.
+"s llamarMenuPrincipal."
+carrito:= CarritodeCompras crearCarrito: '1'.
+
+"------Se simula una compra ------"
+carrito CargarProductoAcarrito: '1'.
+carrito CargarProductoAcarrito: '1'.
+carrito listarCarrito!
+
+dct := Dictionary new. 
+dct at: 'uno' put: 'one'. "Clave 'uno', valor 'one'" 
+dct at: 'dos' put: 'two'. "Clave 'dos', valor 'two'" 
+dct at: 'tres' put: 'three'. 
+dct at: 'cuatro' put: 'four'.
+
+dct do: [:elem | 
+Transcript
+show: elem
+]!
+
+dct := Dictionary new. 
+dct at: 'uno' put: 'one'. "Clave 'uno', valor 'one'" 
+dct at: 'dos' put: 'two'. "Clave 'dos', valor 'two'" 
+dct at: 'tres' put: 'three'. 
+dct at: 'cuatro' put: 'four'.
+
+dct do: [:elem | 
+Transcript
+show: elem;cr
+]!
+
