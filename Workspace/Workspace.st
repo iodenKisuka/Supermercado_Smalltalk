@@ -1,8 +1,8 @@
 ﻿|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
 s:= Supermercado crearSuperNom:'sunshine'.
-c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
 s agregarCliente: c.
-c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos'.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
 s agregarCliente: c.
 e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
 s agregarEmpleado: e.
@@ -21,18 +21,22 @@ Transcript clear.
 s verClientes .
 ClienteSeleecionado:= Prompter prompt: 'Seleccione un cliente'.
 Transcript clear.
-s LLamarMenuPrincipal.
+s llamarMenuPrincipal.
 carrito:= CarritodeCompras crearCarrito: ClienteSeleecionado.
+
+s listarProductosDisponible .
+
+
 menu:= Prompter prompt:'Ingrese un opcion'.
 
 [menu~='0'] whileTrue:[
 		Transcript clear.
-		s LLamarMenuPrincipal.
+		s llamarMenuPrincipal.
 			menu = '1' ifTrue: [ Transcript clear.
-		s listarProductos.
+		s listarProductosDisponible .
 		[ Pseleccionado~='0'] whileTrue:[
 					Transcript clear.
-					s listarProductos.
+					s listarProductosDisponible .
 					Pseleccionado:= Prompter prompt: 'Ingrese una opcion, 0 para salir y proceder con 	la compra'.
 					Transcript show:'----------------------------------------------'.
 					
@@ -47,6 +51,6 @@ menu:= Prompter prompt:'Ingrese un opcion'.
 			menu = '3' ifTrue: [ Prompter prompt: '3' ].
 			menu = '4' ifTrue: [ Prompter prompt: '4'].
 Transcript clear.
-s LLamarMenuPrincipal.
-menu:= Prompter prompt:'Ingrese un numero'.
+s llamarMenuPrincipal.
+menu:= Prompter prompt:'Ingrese un numero o 0 para salir'.
 ].

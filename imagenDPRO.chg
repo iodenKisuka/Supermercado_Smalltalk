@@ -13716,3 +13716,3699 @@ CarritoDeCompras removeFromSystem!
 "13:56:29, 04 July 2021: Image saved"!
 
 "14:00:05, 04 July 2021: Image saved to 'C:\Users\loren\Documents\Dolphin Smalltalk 7\Supermercado\imagenDPRO.img7'"!
+
+"14:07:58, 04 July 2021: Image saved"!
+
+"14:08:01, 04 July 2021: Dolphin Smalltalk Professional started"!
+
+"14:08:05, 04 July 2021: Image saved"!
+
+"14:08:09, 04 July 2021: Dolphin Smalltalk Professional started"!
+
+!CarritodeCompras methodsFor!
+CargarProductoAcarrito:unProducto
+listadeProducto add:unProducto.! !
+!CarritodeCompras categoriesFor: #CargarProductoAcarrito:!public! !
+
+Object subclass: #CarritodeCompras
+	instanceVariableNames: 'listadeProducto precioTotal datosdeSupermercado idpersona'
+	classVariableNames: ''
+	poolDictionaries: ''
+	classInstanceVariableNames: ''!
+
+!CarritodeCompras methodsFor!
+iniCarrito:idPersona
+precioTotal := 0.
+idpersona :=idPersona.
+listadeProducto := OrderedCollection new.
+"listadeProducto :=Dictionary new. "! !
+!CarritodeCompras categoriesFor: #iniCarrito:!public! !
+
+"14:52:58, 04 July 2021: Image saved"!
+
+!CarritodeCompras methodsFor!
+agregarProductoCarritoDLCS: idproducto unidad: unidad
+	"listadeProducto  add:unproducto."
+
+	| stock esta nuevacantidad nombre unproducto |
+	"Se busca que el producto exista en el supermercado"
+	unproducto := datosdeSupermercado buscarElProductoEnSupermercado: idproducto.
+	(unproducto ~= nil)
+		ifTrue: 
+			[nombre := unproducto verNombre.
+			stock := unproducto verStock.
+			"Averiguo si el producto esta en la lista de productos del carrito"
+			esta := true.
+			listadeProducto at: nombre ifAbsent: [esta := false].
+			"ve que la unida no sea superior a el stock"
+			(stock >= unidad)
+				ifTrue: 
+					[unproducto descontarStock: unidad.
+					precioTotal := precioTotal + (unproducto verPrecio * unidad).
+					(esta)
+						ifTrue: 
+							[nuevacantidad := (listadeProducto at: nombre) + unproducto verStock.
+							" actualiza la nueva cantidad que tiene del producto"
+							listadeProducto at: nombre put: nuevacantidad]
+						ifFalse: [listadeProducto at: nombre put: unidad]
+					"si no esta agrega el producto y la cantidad de unidades"]
+				ifFalse: [Transcript show: 'No hay Stock Disponible']
+			"Se finaliza la función si encuenta al producto en supermercado"]! !
+!CarritodeCompras categoriesFor: #agregarProductoCarritoDLCS:unidad:!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+"carrito:=CarritodeCompras."
+Transcript clear.
+s verClientes .
+ClienteSeleecionado:= Prompter prompt: 'Seleccione un cliente'.
+Transcript clear.
+s LLamarMenuPrincipal.
+carrito:= CarritodeCompras crearCarrito: ClienteSeleecionado.
+menu:= Prompter prompt:'Ingrese un opcion'.
+
+[menu~='0'] whileTrue:[
+		Transcript clear.
+		s LLamarMenuPrincipal.
+			menu = '1' ifTrue: [ Transcript clear.
+		s listarProductos.
+		[ Pseleccionado~='0'] whileTrue:[
+					Transcript clear.
+					s listarProductos.
+					Pseleccionado:= Prompter prompt: 'Ingrese una opcion, 0 para salir y proceder con 	la compra'.
+					Transcript show:'----------------------------------------------'.
+					
+		"s listarProductosCarritoIdentificador."
+		"s buscarElProductoEnSupermercado: Pseleccionado."
+		prod := s buscarElProductoEnSupermercado: Pseleccionado.
+		carrito CargarProductoAcarrito:prod.
+		"carrito verProductosEnCarrito."
+		Transcript clear.
+		].].
+			menu = '2' ifTrue: [ carrito verCarrito inspect ].
+			menu = '3' ifTrue: [ Prompter prompt: '3' ].
+			menu = '4' ifTrue: [ Prompter prompt: '4'].
+Transcript clear.
+s LLamarMenuPrincipal.
+menu:= Prompter prompt:'Ingrese un numero'.
+].!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo'.
+s agregarCliente: c.!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo'.
+s agregarCliente: c.!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo'.
+s agregarCliente: c.!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo'.
+s agregarCliente: c.!
+
+"Filed out from Dolphin Smalltalk 7"!
+
+Object subclass: #Persona
+	instanceVariableNames: 'nombre apellido dni'
+	classVariableNames: ''
+	poolDictionaries: ''
+	classInstanceVariableNames: ''!
+
+Persona guid: (GUID fromString: '{01a07eb5-bbdd-48b3-aa86-7e209bec5155}')!
+
+Persona guid: (GUID fromString: '{01a07eb5-bbdd-48b3-aa86-7e209bec5155}')!
+Persona comment: ''!
+
+Persona comment:
+''!
+!Persona methodsFor!
+iniPersona:unDni nom:unNombre ape:unApellido
+"Inicializa una instancia de Persona"
+dni:=unDni.
+nombre:=unNombre.
+apellido:=unApellido.! !
+!Persona methodsFor!
+modiApellido:unApe
+"Modifica el dni de persona"
+apellido:=unApe.! !
+!Persona methodsFor!
+modiDni:unDni
+"Modifica el dni de persona"
+dni:=unDni.! !
+!Persona methodsFor!
+modiNombre:unNom
+"Modifica el dni de persona"
+nombre:=unNom.! !
+!Persona methodsFor!
+verApellido
+"Retorna el apellido"
+^apellido.! !
+!Persona methodsFor!
+verDni
+"Retorna el apellido"
+^dni.! !
+!Persona methodsFor!
+verNombre
+"Retorna el nombre"
+^nombre.! !
+!Persona categoriesFor: #iniPersona:nom:ape:!public! !
+
+!Persona categoriesFor: #modiApellido:!public! !
+
+!Persona categoriesFor: #modiDni:!public! !
+
+!Persona categoriesFor: #modiNombre:!public! !
+
+!Persona categoriesFor: #verApellido!public! !
+
+!Persona categoriesFor: #verDni!public! !
+
+!Persona categoriesFor: #verNombre!public! !
+
+!Persona class methodsFor!
+crearPersona:unDni nom:unNombre ape:unApellido
+"Retorna una instancia de Libro inicializada"
+^(self new) iniPersona:unDni nom:unNombre ape:unApellido.! !
+!Persona class categoriesFor: #crearPersona:nom:ape:!public! !
+
+!
+
+"15:09:08, 04 July 2021: Image saved"!
+
+"Filed out from Dolphin Smalltalk 7"!
+
+Persona subclass: #Cliente
+	instanceVariableNames: 'credito'
+	classVariableNames: ''
+	poolDictionaries: ''
+	classInstanceVariableNames: ''!
+
+Cliente guid: (GUID fromString: '{cff8b5d2-951e-470b-9a64-de9ba8c43043}')!
+
+Cliente guid: (GUID fromString: '{cff8b5d2-951e-470b-9a64-de9ba8c43043}')!
+Cliente comment: ''!
+
+Cliente comment:
+''!
+!Cliente methodsFor!
+iniPersonaCliente:unDni nom:unNombre ape:unApellido
+"Inicializa una instancia de Persona"
+dni:=unDni.
+nombre:=unNombre.
+apellido:=unApellido.
+credito:=0.! !
+!Cliente methodsFor!
+modiApellido:unApe
+"Modifica el dni de persona"
+apellido:=unApe.! !
+!Cliente methodsFor!
+modiCredito:unCred
+"Modifica el dni de persona"
+credito :=unCred.! !
+!Cliente methodsFor!
+modiDni:unDni
+"Modifica el dni de persona"
+dni:=unDni.! !
+!Cliente methodsFor!
+modiNombre:unNom
+"Modifica el dni de persona"
+nombre:=unNom.
+! !
+!Cliente methodsFor!
+verApellido
+"Retorna el apellido"
+^apellido.! !
+!Cliente methodsFor!
+verCredito
+"Retorna el nombre"
+^credito.! !
+!Cliente methodsFor!
+verDni
+"Retorna el apellido"
+^dni.
+! !
+!Cliente methodsFor!
+verNombre
+"Retorna el nombre"
+^nombre.! !
+!Cliente categoriesFor: #iniPersonaCliente:nom:ape:!public! !
+
+!Cliente categoriesFor: #modiApellido:!public! !
+
+!Cliente categoriesFor: #modiCredito:!public! !
+
+!Cliente categoriesFor: #modiDni:!public! !
+
+!Cliente categoriesFor: #modiNombre:!public! !
+
+!Cliente categoriesFor: #verApellido!public! !
+
+!Cliente categoriesFor: #verCredito!public! !
+
+!Cliente categoriesFor: #verDni!public! !
+
+!Cliente categoriesFor: #verNombre!public! !
+
+!Cliente class methodsFor!
+crearPersonaCliente:unDni nom:unNombre ape:unApellido 
+"Retorna una instancia de Libro inicializada"
+^(self new) iniPersonaCliente:unDni nom:unNombre ape:unApellido.! !
+!Cliente class categoriesFor: #crearPersonaCliente:nom:ape:!public! !
+
+!
+
+"Filed out from Dolphin Smalltalk 7"!
+
+Persona subclass: #Cliente
+	instanceVariableNames: 'credito'
+	classVariableNames: ''
+	poolDictionaries: ''
+	classInstanceVariableNames: ''!
+
+Cliente guid: (GUID fromString: '{cff8b5d2-951e-470b-9a64-de9ba8c43043}')!
+
+Cliente guid: (GUID fromString: '{cff8b5d2-951e-470b-9a64-de9ba8c43043}')!
+Cliente comment: ''!
+
+Cliente comment:
+''!
+!Cliente methodsFor!
+iniPersonaCliente:unDni nom:unNombre ape:unApellido
+"Inicializa una instancia de Persona"
+dni:=unDni.
+nombre:=unNombre.
+apellido:=unApellido.
+credito:=0.! !
+!Cliente methodsFor!
+modiApellido:unApe
+"Modifica el dni de persona"
+apellido:=unApe.! !
+!Cliente methodsFor!
+modiCredito:unCred
+"Modifica el dni de persona"
+credito :=unCred.! !
+!Cliente methodsFor!
+modiDni:unDni
+"Modifica el dni de persona"
+dni:=unDni.! !
+!Cliente methodsFor!
+modiNombre:unNom
+"Modifica el dni de persona"
+nombre:=unNom.
+! !
+!Cliente methodsFor!
+verApellido
+"Retorna el apellido"
+^apellido.! !
+!Cliente methodsFor!
+verCredito
+"Retorna el nombre"
+^credito.! !
+!Cliente methodsFor!
+verDni
+"Retorna el apellido"
+^dni.
+! !
+!Cliente methodsFor!
+verNombre
+"Retorna el nombre"
+^nombre.! !
+!Cliente categoriesFor: #iniPersonaCliente:nom:ape:!public! !
+
+!Cliente categoriesFor: #modiApellido:!public! !
+
+!Cliente categoriesFor: #modiCredito:!public! !
+
+!Cliente categoriesFor: #modiDni:!public! !
+
+!Cliente categoriesFor: #modiNombre:!public! !
+
+!Cliente categoriesFor: #verApellido!public! !
+
+!Cliente categoriesFor: #verCredito!public! !
+
+!Cliente categoriesFor: #verDni!public! !
+
+!Cliente categoriesFor: #verNombre!public! !
+
+!Cliente class methodsFor!
+crearPersonaCliente:unDni nom:unNombre ape:unApellido 
+"Retorna una instancia de Libro inicializada"
+^(self new) iniPersonaCliente:unDni nom:unNombre ape:unApellido.! !
+!Cliente class categoriesFor: #crearPersonaCliente:nom:ape:!public! !
+
+!
+
+Persona subclass: #Cliente
+	instanceVariableNames: 'idcliente credito'
+	classVariableNames: ''
+	poolDictionaries: ''
+	classInstanceVariableNames: ''!
+
+!Cliente methodsFor!
+verIDcliente
+^idcliente.! !
+!Cliente categoriesFor: #verIDcliente!public! !
+
+Cliente class removeSelector: #crearPersonaCliente:nom:ape: ifAbsent: []!
+
+"Filed out from Dolphin Smalltalk 7"!
+
+Persona subclass: #Cliente
+	instanceVariableNames: 'credito'
+	classVariableNames: ''
+	poolDictionaries: ''
+	classInstanceVariableNames: ''!
+
+Cliente guid: (GUID fromString: '{cff8b5d2-951e-470b-9a64-de9ba8c43043}')!
+
+Cliente guid: (GUID fromString: '{cff8b5d2-951e-470b-9a64-de9ba8c43043}')!
+Cliente comment: ''!
+
+Cliente comment:
+''!
+!Cliente methodsFor!
+iniPersonaCliente:unDni nom:unNombre ape:unApellido
+"Inicializa una instancia de Persona"
+dni:=unDni.
+nombre:=unNombre.
+apellido:=unApellido.
+credito:=0.! !
+!Cliente methodsFor!
+modiApellido:unApe
+"Modifica el dni de persona"
+apellido:=unApe.! !
+!Cliente methodsFor!
+modiCredito:unCred
+"Modifica el dni de persona"
+credito :=unCred.! !
+!Cliente methodsFor!
+modiDni:unDni
+"Modifica el dni de persona"
+dni:=unDni.! !
+!Cliente methodsFor!
+modiNombre:unNom
+"Modifica el dni de persona"
+nombre:=unNom.
+! !
+!Cliente methodsFor!
+verApellido
+"Retorna el apellido"
+^apellido.! !
+!Cliente methodsFor!
+verCredito
+"Retorna el nombre"
+^credito.! !
+!Cliente methodsFor!
+verDni
+"Retorna el apellido"
+^dni.
+! !
+!Cliente methodsFor!
+verNombre
+"Retorna el nombre"
+^nombre.! !
+!Cliente categoriesFor: #iniPersonaCliente:nom:ape:!public! !
+
+!Cliente categoriesFor: #modiApellido:!public! !
+
+!Cliente categoriesFor: #modiCredito:!public! !
+
+!Cliente categoriesFor: #modiDni:!public! !
+
+!Cliente categoriesFor: #modiNombre:!public! !
+
+!Cliente categoriesFor: #verApellido!public! !
+
+!Cliente categoriesFor: #verCredito!public! !
+
+!Cliente categoriesFor: #verDni!public! !
+
+!Cliente categoriesFor: #verNombre!public! !
+
+!Cliente class methodsFor!
+crearPersonaCliente:unDni nom:unNombre ape:unApellido 
+"Retorna una instancia de Libro inicializada"
+^(self new) iniPersonaCliente:unDni nom:unNombre ape:unApellido.! !
+!Cliente class categoriesFor: #crearPersonaCliente:nom:ape:!public! !
+
+!
+
+Cliente class removeSelector: #crearPersonaCliente:nom:ape: ifAbsent: []!
+
+Cliente removeSelector: #iniPersonaCliente:nom:ape: ifAbsent: []!
+
+Persona subclass: #Cliente
+	instanceVariableNames: 'credito idcliente'
+	classVariableNames: ''
+	poolDictionaries: ''
+	classInstanceVariableNames: ''!
+
+!Cliente methodsFor!
+verIDcliente
+^idcliente.! !
+!Cliente categoriesFor: #verIDcliente!public! !
+
+!Cliente methodsFor!
+iniPersonaCliente:unDni nom:unNombre ape:unApellido
+"Inicializa una instancia de Persona"
+super iniPersona: unDni nom: unNombre ape: unApellido.
+credito:=0.! !
+!Cliente categoriesFor: #iniPersonaCliente:nom:ape:!public! !
+
+!Cliente methodsFor!
+iniPersonaCliente:unDni nom:unNombre ape:unApellido id:unidcliente
+"Inicializa una instancia de Persona"
+super iniPersona: unDni nom: unNombre ape: unApellido.
+credito:=0.
+idcliente:= unidcliente.! !
+!Cliente categoriesFor: #iniPersonaCliente:nom:ape:id:!public! !
+
+Cliente removeSelector: #iniPersonaCliente:nom:ape: ifAbsent: []!
+
+!Empleado methodsFor!
+iniPersonaEmpleado:unDni nom:unNombre ape:unApellido pues:unPuesto sal:unSalario
+"Inicializa una instancia de Persona"
+super iniPersona: unDni nom: unNombre ape: unApellido.
+puesto:=unPuesto.
+salario:=unSalario.
+! !
+!Empleado categoriesFor: #iniPersonaEmpleado:nom:ape:pues:sal:!public! !
+
+"15:16:32, 04 July 2021: Image saved"!
+
+!CarritodeCompras methodsFor!
+listarCarrito
+! !
+!CarritodeCompras categoriesFor: #listarCarrito!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos'.!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo'.
+s agregarCliente: c.!
+
+"15:32:24, 04 July 2021: Image saved"!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+"carrito:=CarritodeCompras."
+Transcript clear.
+s verClientes .!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+"carrito:=CarritodeCompras."
+Transcript clear.
+s verClientes .
+ClienteSeleecionado:= Prompter prompt: 'Seleccione un cliente'.
+Transcript clear.
+s LLamarMenuPrincipal.
+carrito:= CarritodeCompras crearCarrito: ClienteSeleecionado.
+menu:= Prompter prompt:'Ingrese un opcion'.
+
+[menu~='0'] whileTrue:[
+		Transcript clear.
+		s LLamarMenuPrincipal.
+			menu = '1' ifTrue: [ Transcript clear.
+		s listarProductos.
+		[ Pseleccionado~='0'] whileTrue:[
+					Transcript clear.
+					s listarProductos.
+					Pseleccionado:= Prompter prompt: 'Ingrese una opcion, 0 para salir y proceder con 	la compra'.
+					Transcript show:'----------------------------------------------'.
+					
+		"s listarProductosCarritoIdentificador."
+		"s buscarElProductoEnSupermercado: Pseleccionado."
+		prod := s buscarElProductoEnSupermercado: Pseleccionado.
+		carrito CargarProductoAcarrito:prod.
+		"carrito verProductosEnCarrito."
+		Transcript clear.
+		].].
+			menu = '2' ifTrue: [ carrito verCarrito inspect ].
+			menu = '3' ifTrue: [ Prompter prompt: '3' ].
+			menu = '4' ifTrue: [ Prompter prompt: '4'].
+Transcript clear.
+s LLamarMenuPrincipal.
+menu:= Prompter prompt:'Ingrese un numero'.
+].!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.!
+
+!Supermercado methodsFor!
+LLamarMenuPrincipal! !
+!Supermercado categoriesFor: #LLamarMenuPrincipal!public! !
+
+!Supermercado methodsFor!
+llamarMenuPrincipal! !
+!Supermercado categoriesFor: #llamarMenuPrincipal!public! !
+
+Supermercado removeSelector: #LLamarMenuPrincipal ifAbsent: []!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+"carrito:=CarritodeCompras."
+Transcript clear.
+s verClientes .
+ClienteSeleecionado:= Prompter prompt: 'Seleccione un cliente'.
+Transcript clear.
+s LLamarMenuPrincipal.
+carrito:= CarritodeCompras crearCarrito: ClienteSeleecionado.
+menu:= Prompter prompt:'Ingrese un opcion'.
+
+[menu~='0'] whileTrue:[
+		Transcript clear.
+		s LLamarMenuPrincipal.
+			menu = '1' ifTrue: [ Transcript clear.
+		s listarProductos.
+		[ Pseleccionado~='0'] whileTrue:[
+					Transcript clear.
+					s listarProductos.
+					Pseleccionado:= Prompter prompt: 'Ingrese una opcion, 0 para salir y proceder con 	la compra'.
+					Transcript show:'----------------------------------------------'.
+					
+		"s listarProductosCarritoIdentificador."
+		"s buscarElProductoEnSupermercado: Pseleccionado."
+		prod := s buscarElProductoEnSupermercado: Pseleccionado.
+		carrito CargarProductoAcarrito:prod.
+		"carrito verProductosEnCarrito."
+		Transcript clear.
+		].].
+			menu = '2' ifTrue: [ carrito verCarrito inspect ].
+			menu = '3' ifTrue: [ Prompter prompt: '3' ].
+			menu = '4' ifTrue: [ Prompter prompt: '4'].
+Transcript clear.
+s llamarMenuPrincipal.
+menu:= Prompter prompt:'Ingrese un numero'.
+].!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+
+s listarProductos.!
+
+!Supermercado methodsFor!
+listarProductos
+	| a identificador nom precio stock |
+	1 to: productos size
+		do: 
+			[:i |
+			(productos at: i) verStock > 0
+				ifTrue: 
+					[a := i printString.
+					identificador := (productos at: i) verIdentificador printString.
+					nom := (productos at: i) verNombre printString .
+					precio := (productos at: i) verPrecio printString.
+					stock := (productos at: i) verStock printString.
+					Transcript
+						show: a , ') Identificador[' , identificador , '] ' , nom , ' $' , precio , ' Stock[' , stock , ']';
+						cr]]! !
+!Supermercado categoriesFor: #listarProductos!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+
+s listarProductos.!
+
+!Supermercado methodsFor!
+listarProductos2
+|client cont|
+1 to: clientes size
+        do: 
+            [:contador | client := (clientes at: contador).
+cont:=contador printString.
+    Transcript show: cont,' ',client verNombre,' ',client verApellido ;cr ]! !
+!Supermercado categoriesFor: #listarProductos2!public! !
+
+!Supermercado methodsFor!
+listarProductos2
+|product cont a identificador nom precio stock |
+1 to: productos size
+        do: 
+            [:contador | product  := (productos at: contador).
+cont:=contador printString.
+(product  verStock > 0)ifTrue: 
+[
+
+    Transcript show: cont,' ',product verIdentificadorProducto ,' ',product verNombre ;cr ].
+].
+
+
+
+	1 to: productos size
+		do: 
+			[:i |
+			(productos at: i) verStock > 0
+				ifTrue: 
+					[a := i printString.
+					identificador := (productos at: i) verIdentificador printString.
+					nom := (productos at: i) verNombre printString .
+					precio := (productos at: i) verPrecio printString.
+					stock := (productos at: i) verStock printString.
+					Transcript
+						show: a , ') Identificador[' , identificador , '] ' , nom , ' $' , precio , ' Stock[' , stock , ']';
+						cr]]! !
+!Supermercado categoriesFor: #listarProductos2!public! !
+
+!Supermercado methodsFor!
+listarProductos2
+|product cont a identificador nom precio stock |
+1 to: productos size
+        do: 
+            [:contador | product  := (productos at: contador).
+cont:=contador printString.
+(product  verStock > 0)ifTrue: 
+[
+
+    Transcript show: cont,' ',product verIdentificadorProducto ,' ',product verNombre ;cr ].
+].
+
+
+
+	1 to: productos size
+		do: 
+			[:i |
+			(productos at: i) verStock > 0
+				ifTrue: 
+					[a := i printString.
+					identificador := (productos at: i) verIdentificador printString.
+					nom := (productos at: i) verNombre printString .
+					precio := (productos at: i) verPrecio printString.
+					stock := (productos at: i) verStock printString.
+					Transcript
+						show: a , ') Identificador[' , identificador , '] ' , nom , ' $' , precio , ' Stock[' , stock , ']';
+						cr]]! !
+!Supermercado categoriesFor: #listarProductos2!public! !
+
+!Producto methodsFor!
+verNombreProducto
+^nombre.! !
+!Producto categoriesFor: #verNombreProducto!public! !
+
+Producto removeSelector: #verNombre ifAbsent: []!
+
+!Supermercado methodsFor!
+listarProductos2
+|product cont a identificador nom precio stock |
+1 to: productos size
+        do: 
+            [:contador | product  := (productos at: contador).
+cont:=contador printString.
+(product  verStock > 0)ifTrue: 
+[
+
+    Transcript show: cont,' ',product verIdentificadorProducto ,' ',product verNombreProducto ;cr ].
+].
+
+
+
+	1 to: productos size
+		do: 
+			[:i |
+			(productos at: i) verStock > 0
+				ifTrue: 
+					[a := i printString.
+					identificador := (productos at: i) verIdentificador printString.
+					nom := (productos at: i) verNombre printString .
+					precio := (productos at: i) verPrecio printString.
+					stock := (productos at: i) verStock printString.
+					Transcript
+						show: a , ') Identificador[' , identificador , '] ' , nom , ' $' , precio , ' Stock[' , stock , ']';
+						cr]]! !
+!Supermercado categoriesFor: #listarProductos2!public! !
+
+!Supermercado methodsFor!
+listarProductos2
+|product cont a identificador nom precio stock |
+1 to: productos size
+        do: 
+            [:contador | product  := (productos at: contador).
+cont:=contador printString.
+(product  verStock > 0)ifTrue: 
+[
+
+    Transcript show: cont,' identificador:  ',product verIdentificadorProducto ,' ',product verNombreProducto, product verPrecio, product verStock ;cr ].
+].
+
+
+
+	1 to: productos size
+		do: 
+			[:i |
+			(productos at: i) verStock > 0
+				ifTrue: 
+					[a := i printString.
+					identificador := (productos at: i) verIdentificador printString.
+					nom := (productos at: i) verNombre printString .
+					precio := (productos at: i) verPrecio printString.
+					stock := (productos at: i) verStock printString.
+					Transcript
+						show: a , ') Identificador[' , identificador , '] ' , nom , ' $' , precio , ' Stock[' , stock , ']';
+						cr]]! !
+!Supermercado categoriesFor: #listarProductos2!public! !
+
+!Supermercado methodsFor!
+listarProductos2
+|product cont a identificador nom precio stock |
+1 to: productos size
+        do: 
+            [:contador | product  := (productos at: contador).
+cont:=contador printString.
+(product  verStock > 0)ifTrue: 
+[
+
+    Transcript show: cont,' identificador:  ',product verIdentificadorProducto ,' ',product verNombreProducto, product verPrecio, product verStock ;cr ].
+].
+
+
+
+	"1 to: productos size
+		do: 
+			[:i |
+			(productos at: i) verStock > 0
+				ifTrue: 
+					[a := i printString.
+					identificador := (productos at: i) verIdentificador printString.
+					nom := (productos at: i) verNombre printString .
+					precio := (productos at: i) verPrecio printString.
+					stock := (productos at: i) verStock printString.
+					Transcript
+						show: a , ') Identificador[' , identificador , '] ' , nom , ' $' , precio , ' Stock[' , stock , ']';
+						cr]] "! !
+!Supermercado categoriesFor: #listarProductos2!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+
+s listarProductos.!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+
+p verIdentificadorProducto.!
+
+!Supermercado methodsFor!
+listarProductos2
+|product cont a identificador nom precio stock |
+1 to: productos size
+        do: 
+            [:contador | product  := (productos at: contador).
+cont:=contador printString.
+(product  verStock > 0)ifTrue: 
+[
+identificador:=product verIdentificadorProducto printString.
+    Transcript show: cont,' identificador:  ',identificador ,' ',product verNombreProducto, product verPrecio, product verStock ;cr ].
+].
+
+
+
+	"1 to: productos size
+		do: 
+			[:i |
+			(productos at: i) verStock > 0
+				ifTrue: 
+					[a := i printString.
+					identificador := (productos at: i) verIdentificador printString.
+					nom := (productos at: i) verNombre printString .
+					precio := (productos at: i) verPrecio printString.
+					stock := (productos at: i) verStock printString.
+					Transcript
+						show: a , ') Identificador[' , identificador , '] ' , nom , ' $' , precio , ' Stock[' , stock , ']';
+						cr]] "! !
+!Supermercado categoriesFor: #listarProductos2!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+
+s listarProductos.!
+
+!Supermercado methodsFor!
+listarProductos2
+|product cont a identificador nom precio stock |
+1 to: productos size
+        do: 
+            [:contador | product  := (productos at: contador).
+cont:=contador printString.
+(product  verStock > 0)ifTrue: 
+[
+identificador:=product verIdentificadorProducto printString.
+    Transcript show: cont,' identificador:  ',identificador  ;cr ].
+",' ',product verNombreProducto, product verPrecio, product verStock ;cr ]."
+].
+
+
+
+	"1 to: productos size
+		do: 
+			[:i |
+			(productos at: i) verStock > 0
+				ifTrue: 
+					[a := i printString.
+					identificador := (productos at: i) verIdentificador printString.
+					nom := (productos at: i) verNombre printString .
+					precio := (productos at: i) verPrecio printString.
+					stock := (productos at: i) verStock printString.
+					Transcript
+						show: a , ') Identificador[' , identificador , '] ' , nom , ' $' , precio , ' Stock[' , stock , ']';
+						cr]] "! !
+!Supermercado categoriesFor: #listarProductos2!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+
+s listarProductos.!
+
+!Supermercado methodsFor!
+listarProductos2
+|product cont a identificador nom precio stock |
+1 to: productos size
+        do: 
+            [:contador | product  := (productos at: contador).
+cont:=contador printString.
+(product  verStock > 0)ifTrue: 
+[
+identificador:=product verIdentificadorProducto printString.
+    Transcript show: cont,' identificador:  ';cr ].
+",' ',product verNombreProducto, product verPrecio, product verStock ;cr ]."
+].
+
+
+
+	"1 to: productos size
+		do: 
+			[:i |
+			(productos at: i) verStock > 0
+				ifTrue: 
+					[a := i printString.
+					identificador := (productos at: i) verIdentificador printString.
+					nom := (productos at: i) verNombre printString .
+					precio := (productos at: i) verPrecio printString.
+					stock := (productos at: i) verStock printString.
+					Transcript
+						show: a , ') Identificador[' , identificador , '] ' , nom , ' $' , precio , ' Stock[' , stock , ']';
+						cr]] "! !
+!Supermercado categoriesFor: #listarProductos2!public! !
+
+!Supermercado methodsFor!
+listarProductos2
+|product cont a identificador nom precio stock |
+1 to: productos size
+        do: 
+            [:contador | product  := (productos at: contador).
+cont:=contador printString.
+(product  verStock > 0)ifTrue: 
+[
+identificador:=product verIdentificadorProducto printString.
+    Transcript show: cont,' identificador:  ';cr ].
+",' ',product verNombreProducto, product verPrecio, product verStock ;cr ]."
+].
+
+
+
+	"1 to: productos size
+		do: 
+			[:i |
+			(productos at: i) verStock > 0
+				ifTrue: 
+					[a := i printString.
+					identificador := (productos at: i) verIdentificador printString.
+					nom := (productos at: i) verNombre printString .
+					precio := (productos at: i) verPrecio printString.
+					stock := (productos at: i) verStock printString.
+					Transcript
+						show: a , ') Identificador[' , identificador , '] ' , nom , ' $' , precio , ' Stock[' , stock , ']';
+						cr]] "! !
+!Supermercado categoriesFor: #listarProductos2!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+
+s listarProductos.!
+
+!Supermercado methodsFor!
+listarProductosDisponible
+|product cont a identificador nom precio stock |
+1 to: productos size
+        do: 
+            [:contador | product  := (productos at: contador).
+cont:=contador printString.
+(product  verStock > 0)ifTrue: 
+[
+identificador:=product verIdentificadorProducto printString.
+    Transcript show: cont,' identificador:  ';cr ].
+",' ',product verNombreProducto, product verPrecio, product verStock ;cr ]."
+].
+
+
+
+	"1 to: productos size
+		do: 
+			[:i |
+			(productos at: i) verStock > 0
+				ifTrue: 
+					[a := i printString.
+					identificador := (productos at: i) verIdentificador printString.
+					nom := (productos at: i) verNombre printString .
+					precio := (productos at: i) verPrecio printString.
+					stock := (productos at: i) verStock printString.
+					Transcript
+						show: a , ') Identificador[' , identificador , '] ' , nom , ' $' , precio , ' Stock[' , stock , ']';
+						cr]] "! !
+!Supermercado categoriesFor: #listarProductosDisponible!public! !
+
+Supermercado removeSelector: #listarProductos2 ifAbsent: []!
+
+!Supermercado methodsFor!
+verProductos
+	^productos! !
+!Supermercado categoriesFor: #verProductos!public! !
+
+Supermercado removeSelector: #verProductosDisponibles ifAbsent: []!
+
+!Supermercado methodsFor!
+listarProductosDisponible
+|product cont a identificador nom precio stock |
+1 to: productos size
+        do: 
+            [:contador | product  := (productos at: contador).
+cont:=contador printString.
+(product  verStock > 0)ifTrue: 
+[
+identificador:=product verIdentificadorProducto printString.
+    Transcript show: cont,' identificador:  ';cr ].
+",' ',product verNombreProducto, product verPrecio, product verStock ;cr ]."
+].
+
+
+
+	"1 to: productos size
+		do: 
+			[:i |
+			(productos at: i) verStock > 0
+				ifTrue: 
+					[a := i printString.
+					identificador := (productos at: i) verIdentificador printString.
+					nom := (productos at: i) verNombre printString .
+					precio := (productos at: i) verPrecio printString.
+					stock := (productos at: i) verStock printString.
+					Transcript
+						show: a , ') Identificador[' , identificador , '] ' , nom , ' $' , precio , ' Stock[' , stock , ']';
+						cr]] "! !
+!Supermercado categoriesFor: #listarProductosDisponible!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+
+s listarProductos.!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+
+
+s listarProductos.
+!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+
+
+s listarProductos.!
+
+!Supermercado methodsFor!
+listarProductosDisponible
+|product cont a identificador nom precio stock |
+1 to: productos size
+        do: 
+            [:contador | product  := (productos at: contador).
+cont:=contador printString.
+(product  verStock > 0)ifTrue: 
+[
+
+    Transcript show: cont,' identificador:  ';cr ].
+",' ',product verNombreProducto, product verPrecio, product verStock ;cr ]."
+].
+
+
+
+	"1 to: productos size
+		do: 
+			[:i |
+			(productos at: i) verStock > 0
+				ifTrue: 
+					[a := i printString.
+					identificador := (productos at: i) verIdentificador printString.
+					nom := (productos at: i) verNombre printString .
+					precio := (productos at: i) verPrecio printString.
+					stock := (productos at: i) verStock printString.
+					Transcript
+						show: a , ') Identificador[' , identificador , '] ' , nom , ' $' , precio , ' Stock[' , stock , ']';
+						cr]] "! !
+!Supermercado categoriesFor: #listarProductosDisponible!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+
+
+s listarProductos.!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+
+
+s listarProductosDisponible .!
+
+!Supermercado methodsFor!
+listarProductosDisponible
+|product cont a identificador nom precio stock |
+1 to: productos size
+        do: 
+            [:contador | product  := (productos at: contador).
+cont:=contador printString.
+(product  verStock > 0)ifTrue: 
+[
+
+    Transcript show: cont,' identificador: ', product verIdentificadorProducto ,' ',product verNombreProducto, product verPrecio, product verStock ;cr ].
+].
+
+
+
+	"1 to: productos size
+		do: 
+			[:i |
+			(productos at: i) verStock > 0
+				ifTrue: 
+					[a := i printString.
+					identificador := (productos at: i) verIdentificador printString.
+					nom := (productos at: i) verNombre printString .
+					precio := (productos at: i) verPrecio printString.
+					stock := (productos at: i) verStock printString.
+					Transcript
+						show: a , ') Identificador[' , identificador , '] ' , nom , ' $' , precio , ' Stock[' , stock , ']';
+						cr]] "! !
+!Supermercado categoriesFor: #listarProductosDisponible!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+
+
+s listarProductosDisponible .
+!
+
+!Supermercado methodsFor!
+listarProductosDisponible
+|product cont a identificador nom precio stock |
+1 to: productos size
+        do: 
+            [:contador | product  := (productos at: contador).
+cont:=contador printString.
+(product  verStock > 0)ifTrue: 
+[
+
+    Transcript show: cont,' identificador: ', product verIdentificadorProducto  ;cr ].
+",' ',product verNombreProducto, product verPrecio, product verStock ;cr ]."
+].
+
+
+
+	"1 to: productos size
+		do: 
+			[:i |
+			(productos at: i) verStock > 0
+				ifTrue: 
+					[a := i printString.
+					identificador := (productos at: i) verIdentificador printString.
+					nom := (productos at: i) verNombre printString .
+					precio := (productos at: i) verPrecio printString.
+					stock := (productos at: i) verStock printString.
+					Transcript
+						show: a , ') Identificador[' , identificador , '] ' , nom , ' $' , precio , ' Stock[' , stock , ']';
+						cr]] "! !
+!Supermercado categoriesFor: #listarProductosDisponible!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+
+
+s listarProductosDisponible .!
+
+!Supermercado methodsFor!
+listarProductosDisponible
+|product cont a identificador nom precio stock |
+1 to: productos size
+        do: 
+            [:contador | product  := (productos at: contador).
+cont:=contador printString.
+(product  verStock > 0)ifTrue: 
+[
+
+    Transcript show: cont,' identificador: ', product verIdentificadorProducto,product verNombreProducto  ;cr ].
+",' ',product verNombreProducto, product verPrecio, product verStock ;cr ]."
+].
+
+
+
+	"1 to: productos size
+		do: 
+			[:i |
+			(productos at: i) verStock > 0
+				ifTrue: 
+					[a := i printString.
+					identificador := (productos at: i) verIdentificador printString.
+					nom := (productos at: i) verNombre printString .
+					precio := (productos at: i) verPrecio printString.
+					stock := (productos at: i) verStock printString.
+					Transcript
+						show: a , ') Identificador[' , identificador , '] ' , nom , ' $' , precio , ' Stock[' , stock , ']';
+						cr]] "! !
+!Supermercado categoriesFor: #listarProductosDisponible!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+
+
+s listarProductosDisponible .
+!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+
+
+s listarProductosDisponible .!
+
+!Supermercado methodsFor!
+listarProductosDisponible
+|product cont a identificador nom precio stock |
+1 to: productos size
+        do: 
+            [:contador | product  := (productos at: contador).
+cont:=contador printString.
+(product  verStock > 0)ifTrue: 
+[
+
+    Transcript show: cont,' -  identificador: ', product verIdentificadorProducto,'  ',product verNombreProducto  ;cr ].
+",' ',product verNombreProducto, product verPrecio, product verStock ;cr ]."
+].
+
+
+
+	"1 to: productos size
+		do: 
+			[:i |
+			(productos at: i) verStock > 0
+				ifTrue: 
+					[a := i printString.
+					identificador := (productos at: i) verIdentificador printString.
+					nom := (productos at: i) verNombre printString .
+					precio := (productos at: i) verPrecio printString.
+					stock := (productos at: i) verStock printString.
+					Transcript
+						show: a , ') Identificador[' , identificador , '] ' , nom , ' $' , precio , ' Stock[' , stock , ']';
+						cr]] "! !
+!Supermercado categoriesFor: #listarProductosDisponible!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+
+
+s listarProductosDisponible .!
+
+!Supermercado methodsFor!
+listarProductosDisponible
+|product cont a identificador nom precio stock |
+1 to: productos size
+        do: 
+            [:contador | product  := (productos at: contador).
+cont:=contador printString.
+(product  verStock > 0)ifTrue: 
+[
+
+    Transcript show: cont,' -  identificador: ', product verIdentificadorProducto,'  ',product verNombreProducto,' ',product verPrecio  ;cr ].
+",' ',product verNombreProducto, product verPrecio, product verStock ;cr ]."
+].
+
+
+
+	"1 to: productos size
+		do: 
+			[:i |
+			(productos at: i) verStock > 0
+				ifTrue: 
+					[a := i printString.
+					identificador := (productos at: i) verIdentificador printString.
+					nom := (productos at: i) verNombre printString .
+					precio := (productos at: i) verPrecio printString.
+					stock := (productos at: i) verStock printString.
+					Transcript
+						show: a , ') Identificador[' , identificador , '] ' , nom , ' $' , precio , ' Stock[' , stock , ']';
+						cr]] "! !
+!Supermercado categoriesFor: #listarProductosDisponible!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+
+
+s listarProductosDisponible .
+!
+
+!Supermercado methodsFor!
+listarProductosDisponible
+|product cont a identificador nom precio stock |
+1 to: productos size
+        do: 
+            [:contador | product  := (productos at: contador).
+cont:=contador printString.
+(product  verStock > 0)ifTrue: 
+[
+
+    Transcript show: cont,' -  identificador: ', product verIdentificadorProducto,'  ',product verNombreProducto,' ',product verPrecio  ;cr ].
+",' ',product verNombreProducto, product verPrecio, product verStock ;cr ]."
+].
+
+
+
+	"1 to: productos size
+		do: 
+			[:i |
+			(productos at: i) verStock > 0
+				ifTrue: 
+					[a := i printString.
+					identificador := (productos at: i) verIdentificador printString.
+					nom := (productos at: i) verNombre printString .
+					precio := (productos at: i) verPrecio printString.
+					stock := (productos at: i) verStock printString.
+					Transcript
+						show: a , ') Identificador[' , identificador , '] ' , nom , ' $' , precio , ' Stock[' , stock , ']';
+						cr]] "! !
+!Supermercado categoriesFor: #listarProductosDisponible!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p verPrecio.!
+
+!Supermercado methodsFor!
+listarProductosDisponible
+|product cont a identificador nom precio stock |
+1 to: productos size
+        do: 
+            [:contador | product  := (productos at: contador).
+cont:=contador printString.
+(product  verStock > 0)ifTrue: 
+[
+
+    Transcript show: cont,' -  identificador: ', product verIdentificadorProducto,'  ',product verNombreProducto,' ',product verPrecio ;cr ].
+",' ',product verNombreProducto, product verPrecio, product verStock ;cr ]."
+].
+
+
+
+	"1 to: productos size
+		do: 
+			[:i |
+			(productos at: i) verStock > 0
+				ifTrue: 
+					[a := i printString.
+					identificador := (productos at: i) verIdentificador printString.
+					nom := (productos at: i) verNombre printString .
+					precio := (productos at: i) verPrecio printString.
+					stock := (productos at: i) verStock printString.
+					Transcript
+						show: a , ') Identificador[' , identificador , '] ' , nom , ' $' , precio , ' Stock[' , stock , ']';
+						cr]] "! !
+!Supermercado categoriesFor: #listarProductosDisponible!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p verPrecio.
+
+s listarProductosDisponible .!
+
+!Supermercado methodsFor!
+listarProductosDisponible
+|product cont a identificador nom precio stock |
+1 to: productos size
+        do: 
+            [:contador | product  := (productos at: contador).
+cont:=contador printString.
+(product  verStock > 0)ifTrue: 
+[
+
+    Transcript show: cont,' -  identificador: ', product verIdentificadorProducto,'  ',product verNombreProducto,' ';cr ].
+",' ',product verNombreProducto, product verPrecio, product verStock ;cr ]."
+].
+
+
+
+	"1 to: productos size
+		do: 
+			[:i |
+			(productos at: i) verStock > 0
+				ifTrue: 
+					[a := i printString.
+					identificador := (productos at: i) verIdentificador printString.
+					nom := (productos at: i) verNombre printString .
+					precio := (productos at: i) verPrecio printString.
+					stock := (productos at: i) verStock printString.
+					Transcript
+						show: a , ') Identificador[' , identificador , '] ' , nom , ' $' , precio , ' Stock[' , stock , ']';
+						cr]] "! !
+!Supermercado categoriesFor: #listarProductosDisponible!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p verPrecio.
+
+s listarProductosDisponible .!
+
+!Supermercado methodsFor!
+listarProductosDisponible
+|product cont a identificador nom precio stock |
+1 to: productos size
+        do: 
+            [:contador | product  := (productos at: contador).
+cont:=contador printString.
+(product  verStock > 0)ifTrue: 
+[
+
+    Transcript show: cont,' -  identificador: ', product verIdentificadorProducto,'  ',product verNombreProducto,' ', product  verNombreProducto ;cr ].
+",' ',product verNombreProducto, product verPrecio, product verStock ;cr ]."
+].
+
+
+
+	"1 to: productos size
+		do: 
+			[:i |
+			(productos at: i) verStock > 0
+				ifTrue: 
+					[a := i printString.
+					identificador := (productos at: i) verIdentificador printString.
+					nom := (productos at: i) verNombre printString .
+					precio := (productos at: i) verPrecio printString.
+					stock := (productos at: i) verStock printString.
+					Transcript
+						show: a , ') Identificador[' , identificador , '] ' , nom , ' $' , precio , ' Stock[' , stock , ']';
+						cr]] "! !
+!Supermercado categoriesFor: #listarProductosDisponible!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p verPrecio.
+
+s listarProductosDisponible .
+!
+
+!Supermercado methodsFor!
+listarProductosDisponible
+|product cont a identificador nom precio stock |
+1 to: productos size
+        do: 
+            [:contador | product  := (productos at: contador).
+cont:=contador printString.
+(product  verStock > 0)ifTrue: 
+[
+precio:= product verPrecio.
+
+    Transcript show: cont,' -  identificador: ', product verIdentificadorProducto,'  ',product verNombreProducto,' ', product  verNombreProducto ;cr ].
+",' ',product verNombreProducto, product verPrecio, product verStock ;cr ]."
+].
+
+
+
+	"1 to: productos size
+		do: 
+			[:i |
+			(productos at: i) verStock > 0
+				ifTrue: 
+					[a := i printString.
+					identificador := (productos at: i) verIdentificador printString.
+					nom := (productos at: i) verNombre printString .
+					precio := (productos at: i) verPrecio printString.
+					stock := (productos at: i) verStock printString.
+					Transcript
+						show: a , ') Identificador[' , identificador , '] ' , nom , ' $' , precio , ' Stock[' , stock , ']';
+						cr]] "! !
+!Supermercado categoriesFor: #listarProductosDisponible!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p verPrecio.
+
+s listarProductosDisponible .!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p verPrecio.
+
+s listarProductosDisponible .
+!
+
+!Supermercado methodsFor!
+listarProductosDisponible
+|product cont a identificador nom precio stock |
+1 to: productos size
+        do: 
+            [:contador | product  := (productos at: contador).
+cont:=contador printString.
+(product  verStock > 0)ifTrue: 
+[
+precio:= product verPrecio.
+
+    Transcript show: cont,' -  identificador: ', product verIdentificadorProducto,'  ',product verNombreProducto,' ', precio ;cr ].
+",' ',product verNombreProducto, product verPrecio, product verStock ;cr ]."
+].
+
+
+
+	"1 to: productos size
+		do: 
+			[:i |
+			(productos at: i) verStock > 0
+				ifTrue: 
+					[a := i printString.
+					identificador := (productos at: i) verIdentificador printString.
+					nom := (productos at: i) verNombre printString .
+					precio := (productos at: i) verPrecio printString.
+					stock := (productos at: i) verStock printString.
+					Transcript
+						show: a , ') Identificador[' , identificador , '] ' , nom , ' $' , precio , ' Stock[' , stock , ']';
+						cr]] "! !
+!Supermercado categoriesFor: #listarProductosDisponible!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p verPrecio.
+
+s listarProductosDisponible .!
+
+!Supermercado methodsFor!
+listarProductosDisponible
+|product cont a identificador nom precio stock |
+1 to: productos size
+        do: 
+            [:contador | product  := (productos at: contador).
+cont:=contador printString.
+(product  verStock > 0)ifTrue: 
+[
+precio:= product verPrecio.
+
+    Transcript show: cont,' -  identificador: ', product verPrecio ;cr ].
+"product verIdentificadorProducto,'  ',product verNombreProducto,' ', precio ;cr ]."
+",' ',product verNombreProducto, product verPrecio, product verStock ;cr ]."
+].
+
+
+
+	"1 to: productos size
+		do: 
+			[:i |
+			(productos at: i) verStock > 0
+				ifTrue: 
+					[a := i printString.
+					identificador := (productos at: i) verIdentificador printString.
+					nom := (productos at: i) verNombre printString .
+					precio := (productos at: i) verPrecio printString.
+					stock := (productos at: i) verStock printString.
+					Transcript
+						show: a , ') Identificador[' , identificador , '] ' , nom , ' $' , precio , ' Stock[' , stock , ']';
+						cr]] "! !
+!Supermercado categoriesFor: #listarProductosDisponible!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p verPrecio.
+
+s listarProductosDisponible .!
+
+!Producto methodsFor!
+verPrecioProducto
+^precioUnitario .! !
+!Producto categoriesFor: #verPrecioProducto!public! !
+
+!Supermercado methodsFor!
+listarProductosDisponible
+|product cont a identificador nom precio stock |
+1 to: productos size
+        do: 
+            [:contador | product  := (productos at: contador).
+cont:=contador printString.
+(product  verStock > 0)ifTrue: 
+[
+precio:= product verPrecio.
+
+    Transcript show: cont,' -  identificador: ', product verPrecioProducto ;cr ].
+"product verIdentificadorProducto,'  ',product verNombreProducto,' ', precio ;cr ]."
+",' ',product verNombreProducto, product verPrecio, product verStock ;cr ]."
+].
+
+
+
+	"1 to: productos size
+		do: 
+			[:i |
+			(productos at: i) verStock > 0
+				ifTrue: 
+					[a := i printString.
+					identificador := (productos at: i) verIdentificador printString.
+					nom := (productos at: i) verNombre printString .
+					precio := (productos at: i) verPrecio printString.
+					stock := (productos at: i) verStock printString.
+					Transcript
+						show: a , ') Identificador[' , identificador , '] ' , nom , ' $' , precio , ' Stock[' , stock , ']';
+						cr]] "! !
+!Supermercado categoriesFor: #listarProductosDisponible!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p verPrecio.
+
+s listarProductosDisponible .!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p verPrecio.
+
+s listarProductosDisponible .!
+
+!Supermercado methodsFor!
+listarProductosDisponible
+|product cont a identificador nom precio stock |
+1 to: productos size
+        do: 
+            [:contador | product  := (productos at: contador).
+cont:=contador printString.
+(product  verStock > 0)ifTrue: 
+[
+
+
+    Transcript show: cont,' -  identificador: ', product verPrecioProducto ;cr ].
+"product verIdentificadorProducto,'  ',product verNombreProducto,' ', precio ;cr ]."
+",' ',product verNombreProducto, product verPrecio, product verStock ;cr ]."
+].
+
+
+
+	"1 to: productos size
+		do: 
+			[:i |
+			(productos at: i) verStock > 0
+				ifTrue: 
+					[a := i printString.
+					identificador := (productos at: i) verIdentificador printString.
+					nom := (productos at: i) verNombre printString .
+					precio := (productos at: i) verPrecio printString.
+					stock := (productos at: i) verStock printString.
+					Transcript
+						show: a , ') Identificador[' , identificador , '] ' , nom , ' $' , precio , ' Stock[' , stock , ']';
+						cr]] "! !
+!Supermercado categoriesFor: #listarProductosDisponible!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p verPrecio.
+
+s listarProductosDisponible .!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p verPrecio.!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p verPrecio.
+!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p verPrecio.
+!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p verPrecio.
+
+s listarProductosDisponible .!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p verPrecio.
+
+s listarProductosDisponible .!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p verPrecio.
+
+s listarProductosDisponible .!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p verPrecio.
+
+s listarProductosDisponible .!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p verPrecio.
+
+s listarProductosDisponible .!
+
+!Producto methodsFor!
+verPrecioProducto
+	^precioUnitario! !
+!Producto categoriesFor: #verPrecioProducto!public! !
+
+!Producto methodsFor!
+verPrecioProducto
+	^precioUnitario! !
+!Producto categoriesFor: #verPrecioProducto!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p verPrecio.
+
+s listarProductosDisponible .
+!
+
+!Producto methodsFor!
+verIdentificadorProducto
+	^identificador! !
+!Producto categoriesFor: #verIdentificadorProducto!public! !
+
+!Supermercado methodsFor!
+listarProductosDisponible
+	| product cont a identificador nom precio stock |
+	1 to: productos size
+		do: 
+			[:contador |
+			product := productos at: contador.
+			cont := contador printString.
+			product verStock > 0
+				ifTrue: 
+					[Transcript
+						show: cont , ' -  identificador: ' , product verPrecioProducto;
+						cr]
+			"product verIdentificadorProducto,'  ',product verNombreProducto,' ', precio ;cr ]."
+			",' ',product verNombreProducto, product verPrecio, product verStock ;cr ]."]
+
+
+
+	"1 to: productos size
+		do: 
+			[:i |
+			(productos at: i) verStock > 0
+				ifTrue: 
+					[a := i printString.
+					identificador := (productos at: i) verIdentificador printString.
+					nom := (productos at: i) verNombre printString .
+					precio := (productos at: i) verPrecio printString.
+					stock := (productos at: i) verStock printString.
+					Transcript
+						show: a , ') Identificador[' , identificador , '] ' , nom , ' $' , precio , ' Stock[' , stock , ']';
+						cr]] "! !
+!Supermercado categoriesFor: #listarProductosDisponible!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p verPrecio.
+
+s listarProductosDisponible .!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p verPrecio.!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p verPrecio.
+
+s listarProductosDisponible .!
+
+!Producto methodsFor!
+verPrecioProducto
+[Transcript show: precioUnitario ;cr]
+	" ^precioUnitario"! !
+!Producto categoriesFor: #verPrecioProducto!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p verPrecioProducto .
+!
+
+!Producto methodsFor!
+verPrecioProducto
+[Transcript show: precioUnitario ;cr]
+	" ^precioUnitario"! !
+!Producto categoriesFor: #verPrecioProducto!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p verPrecioProducto .
+!
+
+!Producto methodsFor!
+verPrecioProducto
+[Transcript show: precioUnitario ;cr]
+	" ^precioUnitario"! !
+!Producto categoriesFor: #verPrecioProducto!public! !
+
+!Producto methodsFor!
+verPrecioProducto
+[Transcript show: precioUnitario ;cr]
+	" ^precioUnitario"! !
+!Producto categoriesFor: #verPrecioProducto!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p verPrecioProducto!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p verNombre.
+p verPrecioProducto.!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p verNombre.
+p verPrecioProducto.
+!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+"p verNombre."
+p verPrecioProducto.
+!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+"p verNombre."
+p verPrecioProducto.!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p verNombre.!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p verNombreProducto.
+p verPrecioProducto.!
+
+!Producto methodsFor!
+verPrecioProducto
+[Transcript show: 'hola',precioUnitario ;cr]
+	" ^precioUnitario"! !
+!Producto categoriesFor: #verPrecioProducto!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p verNombreProducto.
+p verPrecioProducto.
+!
+
+!Producto methodsFor!
+verPrecioProducto
+[Transcript show: 'hola',precioUnitario ;cr]
+	" ^precioUnitario"! !
+!Producto categoriesFor: #verPrecioProducto!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p verNombreProducto.
+p verPrecioProducto.
+
+!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+"p verNombreProducto."
+p verPrecioProducto.
+!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p verNombreProducto.
+p verPrecioProducto.
+!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+p verPrecioProducto.!
+
+Producto removeSelector: #verPrecioProducto ifAbsent: []!
+
+!Supermercado methodsFor!
+listarProductosDisponible
+	| product cont a identificador nom precio stock |
+	1 to: productos size
+		do: 
+			[:contador |
+			product := productos at: contador.
+			cont := contador printString.
+			product verStock > 0
+				ifTrue: 
+					[Transcript
+
+						show: cont , ' -  identificador: ' , product verPrecioProducto;
+						cr]
+			"product verIdentificadorProducto,'  ',product verNombreProducto,' ', precio ;cr ]."
+			",' ',product verNombreProducto, product verPrecio, product verStock ;cr ]."]
+
+
+
+	"1 to: productos size
+		do: 
+			[:i |
+			(productos at: i) verStock > 0
+				ifTrue: 
+					[a := i printString.
+					identificador := (productos at: i) verIdentificador printString.
+					nom := (productos at: i) verNombre printString .
+					precio := (productos at: i) verPrecio printString.
+					stock := (productos at: i) verStock printString.
+					Transcript
+						show: a , ') Identificador[' , identificador , '] ' , nom , ' $' , precio , ' Stock[' , stock , ']';
+						cr]] "! !
+!Supermercado categoriesFor: #listarProductosDisponible!public! !
+
+!Supermercado methodsFor!
+listarProductosDisponible
+	| product cont a identificador nom precio stock |
+	1 to: productos size
+		do: 
+			[:contador |
+			product := productos at: contador.
+			cont := contador printString.
+			product verStock > 0
+				ifTrue: 
+					[
+precio:= product verPrecio printString.
+
+Transcript
+
+						show: cont , ' -  identificador: ' , precio ;
+						cr]
+			"product verIdentificadorProducto,'  ',product verNombreProducto,' ', precio ;cr ]."
+			",' ',product verNombreProducto, product verPrecio, product verStock ;cr ]."]
+
+
+
+	"1 to: productos size
+		do: 
+			[:i |
+			(productos at: i) verStock > 0
+				ifTrue: 
+					[a := i printString.
+					identificador := (productos at: i) verIdentificador printString.
+					nom := (productos at: i) verNombre printString .
+					precio := (productos at: i) verPrecio printString.
+					stock := (productos at: i) verStock printString.
+					Transcript
+						show: a , ') Identificador[' , identificador , '] ' , nom , ' $' , precio , ' Stock[' , stock , ']';
+						cr]] "! !
+!Supermercado categoriesFor: #listarProductosDisponible!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+s listarProductosDisponible .!
+
+!Supermercado methodsFor!
+listarProductosDisponible
+	| product cont a identificador nom precio stock |
+	1 to: productos size
+		do: 
+			[:contador |
+			product := productos at: contador.
+			cont := contador printString.
+			product verStock > 0
+				ifTrue: 
+					[
+precio:= product verPrecio printString.
+stock := product verStock printString.
+
+Transcript
+
+						show: cont , ' -  identificador: ' , precio ;
+						cr]
+			"product verIdentificadorProducto,'  ',product verNombreProducto,' ', precio ;cr ]."
+			",' ',product verNombreProducto, product verPrecio, product verStock ;cr ]."]
+
+
+
+	"1 to: productos size
+		do: 
+			[:i |
+			(productos at: i) verStock > 0
+				ifTrue: 
+					[a := i printString.
+					identificador := (productos at: i) verIdentificador printString.
+					nom := (productos at: i) verNombre printString .
+					precio := (productos at: i) verPrecio printString.
+					stock := (productos at: i) verStock printString.
+					Transcript
+						show: a , ') Identificador[' , identificador , '] ' , nom , ' $' , precio , ' Stock[' , stock , ']';
+						cr]] "! !
+!Supermercado categoriesFor: #listarProductosDisponible!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+s listarProductosDisponible .!
+
+!Supermercado methodsFor!
+listarProductosDisponible
+	| product cont a identificador nom precio stock |
+	1 to: productos size
+		do: 
+			[:contador |
+			product := productos at: contador.
+			cont := contador printString.
+			product verStock > 0
+				ifTrue: 
+					[
+precio:= product verPrecio printString.
+stock := product verStock printString.
+
+Transcript
+
+						show: cont , ' -  identificador: ' , precio,stock ;
+						cr]
+			"product verIdentificadorProducto,'  ',product verNombreProducto,' ', precio ;cr ]."
+			",' ',product verNombreProducto, product verPrecio, product verStock ;cr ]."]
+
+
+
+	"1 to: productos size
+		do: 
+			[:i |
+			(productos at: i) verStock > 0
+				ifTrue: 
+					[a := i printString.
+					identificador := (productos at: i) verIdentificador printString.
+					nom := (productos at: i) verNombre printString .
+					precio := (productos at: i) verPrecio printString.
+					stock := (productos at: i) verStock printString.
+					Transcript
+						show: a , ') Identificador[' , identificador , '] ' , nom , ' $' , precio , ' Stock[' , stock , ']';
+						cr]] "! !
+!Supermercado categoriesFor: #listarProductosDisponible!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+s listarProductosDisponible .!
+
+!Supermercado methodsFor!
+listarProductosDisponible
+	| product cont a identificador nom precio stock |
+	1 to: productos size
+		do: 
+			[:contador |
+			product := productos at: contador.
+			cont := contador printString.
+			product verStock > 0
+				ifTrue: 
+					[
+precio:= product verPrecio printString.
+stock := product verStock printString.
+
+Transcript
+
+						show: cont , ' -  identificador: ' ,product verIdentificadorProducto, precio,stock ;
+						cr]
+			"product verIdentificadorProducto,'  ',product verNombreProducto,' ', precio ;cr ]."
+			",' ',product verNombreProducto, product verPrecio, product verStock ;cr ]."]
+
+
+
+	"1 to: productos size
+		do: 
+			[:i |
+			(productos at: i) verStock > 0
+				ifTrue: 
+					[a := i printString.
+					identificador := (productos at: i) verIdentificador printString.
+					nom := (productos at: i) verNombre printString .
+					precio := (productos at: i) verPrecio printString.
+					stock := (productos at: i) verStock printString.
+					Transcript
+						show: a , ') Identificador[' , identificador , '] ' , nom , ' $' , precio , ' Stock[' , stock , ']';
+						cr]] "! !
+!Supermercado categoriesFor: #listarProductosDisponible!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+s listarProductosDisponible .!
+
+!Supermercado methodsFor!
+listarProductosDisponible
+	| product cont a identificador nom precio stock |
+	1 to: productos size
+		do: 
+			[:contador |
+			product := productos at: contador.
+			cont := contador printString.
+			product verStock > 0
+				ifTrue: 
+					[
+precio:= product verPrecio printString.
+stock := product verStock printString.
+
+Transcript
+
+						show: cont , ' -  identificador: ' ,product verIdentificadorProducto,,'  ',product verNombreProducto, precio,stock ;
+						cr]
+			"product verIdentificadorProducto,'  ',product verNombreProducto,' ', precio ;cr ]."
+			",' ',product verNombreProducto, product verPrecio, product verStock ;cr ]."]
+
+
+
+	"1 to: productos size
+		do: 
+			[:i |
+			(productos at: i) verStock > 0
+				ifTrue: 
+					[a := i printString.
+					identificador := (productos at: i) verIdentificador printString.
+					nom := (productos at: i) verNombre printString .
+					precio := (productos at: i) verPrecio printString.
+					stock := (productos at: i) verStock printString.
+					Transcript
+						show: a , ') Identificador[' , identificador , '] ' , nom , ' $' , precio , ' Stock[' , stock , ']';
+						cr]] "! !
+!Supermercado categoriesFor: #listarProductosDisponible!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+s listarProductosDisponible .
+!
+
+!Supermercado methodsFor!
+listarProductosDisponible
+	| product cont a identificador nom precio stock |
+	1 to: productos size
+		do: 
+			[:contador |
+			product := productos at: contador.
+			cont := contador printString.
+			product verStock > 0
+				ifTrue: 
+					[
+precio:= product verPrecio printString.
+stock := product verStock printString.
+
+Transcript
+
+						show: cont , ' -  identificador: ' ,product verIdentificadorProducto,'  ',product verNombreProducto, precio,stock ;
+						cr]
+			"product verIdentificadorProducto,'  ',product verNombreProducto,' ', precio ;cr ]."
+			",' ',product verNombreProducto, product verPrecio, product verStock ;cr ]."]
+
+
+
+	"1 to: productos size
+		do: 
+			[:i |
+			(productos at: i) verStock > 0
+				ifTrue: 
+					[a := i printString.
+					identificador := (productos at: i) verIdentificador printString.
+					nom := (productos at: i) verNombre printString .
+					precio := (productos at: i) verPrecio printString.
+					stock := (productos at: i) verStock printString.
+					Transcript
+						show: a , ') Identificador[' , identificador , '] ' , nom , ' $' , precio , ' Stock[' , stock , ']';
+						cr]] "! !
+!Supermercado categoriesFor: #listarProductosDisponible!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+s listarProductosDisponible .!
+
+!Supermercado methodsFor!
+listarProductosDisponible
+	| product cont a identificador nom precio stock |
+	1 to: productos size
+		do: 
+			[:contador |
+			product := productos at: contador.
+			cont := contador printString.
+			product verStock > 0
+				ifTrue: 
+					[
+precio:= product verPrecio printString.
+stock := product verStock printString.
+
+Transcript
+
+						show: cont , ' -  identificador: ' ,product verIdentificadorProducto,'  ',product verNombreProducto,'precio', precio,stock ;
+						cr]
+			"product verIdentificadorProducto,'  ',product verNombreProducto,' ', precio ;cr ]."
+			",' ',product verNombreProducto, product verPrecio, product verStock ;cr ]."]
+
+
+
+	"1 to: productos size
+		do: 
+			[:i |
+			(productos at: i) verStock > 0
+				ifTrue: 
+					[a := i printString.
+					identificador := (productos at: i) verIdentificador printString.
+					nom := (productos at: i) verNombre printString .
+					precio := (productos at: i) verPrecio printString.
+					stock := (productos at: i) verStock printString.
+					Transcript
+						show: a , ') Identificador[' , identificador , '] ' , nom , ' $' , precio , ' Stock[' , stock , ']';
+						cr]] "! !
+!Supermercado categoriesFor: #listarProductosDisponible!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+s listarProductosDisponible .
+!
+
+!Supermercado methodsFor!
+listarProductosDisponible
+	| product cont a identificador nom precio stock |
+	1 to: productos size
+		do: 
+			[:contador |
+			product := productos at: contador.
+			cont := contador printString.
+			product verStock > 0
+				ifTrue: 
+					[
+precio:= product verPrecio printString.
+stock := product verStock printString.
+
+Transcript
+
+						show: cont , ' -  identificador: ' ,product verIdentificadorProducto,'  ',product verNombreProducto,' precio: ', precio,'stock',stock;
+						cr]
+			"product verIdentificadorProducto,'  ',product verNombreProducto,' ', precio ;cr ]."
+			",' ',product verNombreProducto, product verPrecio, product verStock ;cr ]."]
+
+
+
+	"1 to: productos size
+		do: 
+			[:i |
+			(productos at: i) verStock > 0
+				ifTrue: 
+					[a := i printString.
+					identificador := (productos at: i) verIdentificador printString.
+					nom := (productos at: i) verNombre printString .
+					precio := (productos at: i) verPrecio printString.
+					stock := (productos at: i) verStock printString.
+					Transcript
+						show: a , ') Identificador[' , identificador , '] ' , nom , ' $' , precio , ' Stock[' , stock , ']';
+						cr]] "! !
+!Supermercado categoriesFor: #listarProductosDisponible!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+s listarProductosDisponible .
+!
+
+!Supermercado methodsFor!
+listarProductosDisponible
+	| product cont a identificador nom precio stock |
+	1 to: productos size
+		do: 
+			[:contador |
+			product := productos at: contador.
+			cont := contador printString.
+			product verStock > 0
+				ifTrue: 
+					[
+precio:= product verPrecio printString.
+stock := product verStock printString.
+
+Transcript
+
+						show: cont , ' -  identificador: ' ,product verIdentificadorProducto,'  ',product verNombreProducto,' precio: ', precio,' stock',stock;
+						cr]
+			"product verIdentificadorProducto,'  ',product verNombreProducto,' ', precio ;cr ]."
+			",' ',product verNombreProducto, product verPrecio, product verStock ;cr ]."]
+
+
+
+	"1 to: productos size
+		do: 
+			[:i |
+			(productos at: i) verStock > 0
+				ifTrue: 
+					[a := i printString.
+					identificador := (productos at: i) verIdentificador printString.
+					nom := (productos at: i) verNombre printString .
+					precio := (productos at: i) verPrecio printString.
+					stock := (productos at: i) verStock printString.
+					Transcript
+						show: a , ') Identificador[' , identificador , '] ' , nom , ' $' , precio , ' Stock[' , stock , ']';
+						cr]] "! !
+!Supermercado categoriesFor: #listarProductosDisponible!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+s listarProductosDisponible .!
+
+!Supermercado methodsFor!
+listarProductosDisponible
+	| product cont a identificador nom precio stock |
+	1 to: productos size
+		do: 
+			[:contador |
+			product := productos at: contador.
+			cont := contador printString.
+			product verStock > 0
+				ifTrue: 
+					[
+precio:= product verPrecio printString.
+stock := product verStock printString.
+
+Transcript
+
+						show: cont , ' -  identificador: ' ,product verIdentificadorProducto,'  ',product verNombreProducto,' precio: ', precio,' stock: ',stock;
+						cr]
+			"product verIdentificadorProducto,'  ',product verNombreProducto,' ', precio ;cr ]."
+			",' ',product verNombreProducto, product verPrecio, product verStock ;cr ]."]
+
+
+
+	"1 to: productos size
+		do: 
+			[:i |
+			(productos at: i) verStock > 0
+				ifTrue: 
+					[a := i printString.
+					identificador := (productos at: i) verIdentificador printString.
+					nom := (productos at: i) verNombre printString .
+					precio := (productos at: i) verPrecio printString.
+					stock := (productos at: i) verStock printString.
+					Transcript
+						show: a , ') Identificador[' , identificador , '] ' , nom , ' $' , precio , ' Stock[' , stock , ']';
+						cr]] "! !
+!Supermercado categoriesFor: #listarProductosDisponible!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+s listarProductosDisponible .!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+s listarProductosDisponible .!
+
+"17:13:18, 04 July 2021: Image saved"!
+
+"17:13:19, 04 July 2021: Image saved"!
+
+"17:13:21, 04 July 2021: Image saved"!
+
+"17:13:25, 04 July 2021: Image saved"!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+
+
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+
+
+s listarProductosDisponible .!
+
+!Supermercado methodsFor!
+listarProductosDisponible
+	| product cont a identificador nom precio stock |
+	1 to: productos size
+		do: 
+			[:contador |
+			product := productos at: contador.
+			cont := contador printString.
+			product verStock > 0
+				ifTrue: 
+					[
+precio:= product verPrecio printString.
+stock := product verStock printString.
+
+Transcript
+
+						show: cont , ' -  identificador: ' ,product verIdentificadorProducto,'  ',product verNombreProducto,' precio: ', precio,' stock: ',stock;
+						cr]
+			"product verIdentificadorProducto,'  ',product verNombreProducto,' ', precio ;cr ]."
+			",' ',product verNombreProducto, product verPrecio, product verStock ;cr ]."]
+
+
+
+	"1 to: productos size
+		do: 
+			[:i |
+			(productos at: i) verStock > 0
+				ifTrue: 
+					[a := i printString.
+					identificador := (productos at: i) verIdentificador printString.
+					nom := (productos at: i) verNombre printString .
+					precio := (productos at: i) verPrecio printString.
+					stock := (productos at: i) verStock printString.
+					Transcript
+						show: a , ') Identificador[' , identificador , '] ' , nom , ' $' , precio , ' Stock[' , stock , ']';
+						cr]] "! !
+!Supermercado categoriesFor: #listarProductosDisponible!public! !
+
+"17:16:07, 04 July 2021: Image saved"!
+
+"17:16:56, 04 July 2021: Image saved"!
+
+"17:16:59, 04 July 2021: Image saved"!
+
+"17:17:30, 04 July 2021: Image saved"!
+
+"17:17:30, 04 July 2021: Image saved"!
+
+|supermercado1 a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+supermercado1:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+supermercado1 agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+supermercado1 agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+supermercado1 agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+supermercado1 agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+supermercado1 agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+supermercado1 agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+supermercado1 agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+supermercado1 agregarProductoSupermercado: productob.
+"carrito:=CarritodeCompras."
+Transcript clear.
+supermercado1 verClientes .
+ClienteSeleecionado:= Prompter prompt: 'Seleccione un cliente'.
+Transcript clear.!
+
+"17:21:05, 04 July 2021: Image saved"!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+"carrito:=CarritodeCompras."
+Transcript clear.
+s verClientes .
+ClienteSeleecionado:= Prompter prompt: 'Seleccione un cliente'.
+Transcript clear.
+s LLamarMenuPrincipal.
+carrito:= CarritodeCompras crearCarrito: ClienteSeleecionado.
+menu:= Prompter prompt:'Ingrese un opcion'.
+
+[menu~='0'] whileTrue:[
+		Transcript clear.
+		s LLamarMenuPrincipal.
+			menu = '1' ifTrue: [ Transcript clear.
+		s listarProductos.
+		[ Pseleccionado~='0'] whileTrue:[
+					Transcript clear.
+					s listarProductos.
+					Pseleccionado:= Prompter prompt: 'Ingrese una opcion, 0 para salir y proceder con 	la compra'.
+					Transcript show:'----------------------------------------------'.
+					
+		"s listarProductosCarritoIdentificador."
+		"s buscarElProductoEnSupermercado: Pseleccionado."
+		prod := s buscarElProductoEnSupermercado: Pseleccionado.
+		carrito CargarProductoAcarrito:prod.
+		"carrito verProductosEnCarrito."
+		Transcript clear.
+		].].
+			menu = '2' ifTrue: [ carrito verCarrito inspect ].
+			menu = '3' ifTrue: [ Prompter prompt: '3' ].
+			menu = '4' ifTrue: [ Prompter prompt: '4'].
+Transcript clear.
+s llamarMenuPrincipal.
+menu:= Prompter prompt:'Ingrese un numero'.
+].!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+"carrito:=CarritodeCompras."
+Transcript clear.
+s verClientes .
+ClienteSeleecionado:= Prompter prompt: 'Seleccione un cliente'.
+Transcript clear.
+s LLamarMenuPrincipal.
+carrito:= CarritodeCompras crearCarrito: ClienteSeleecionado.
+menu:= Prompter prompt:'Ingrese un opcion'.
+
+[menu~='0'] whileTrue:[
+		Transcript clear.
+		s LLamarMenuPrincipal.
+			menu = '1' ifTrue: [ Transcript clear.
+		s listarProductosDisponible.
+		[ Pseleccionado~='0'] whileTrue:[
+					Transcript clear.
+					s listarProductos.
+					Pseleccionado:= Prompter prompt: 'Ingrese una opcion, 0 para salir y proceder con 	la compra'.
+					Transcript show:'----------------------------------------------'.
+					
+		"s listarProductosCarritoIdentificador."
+		"s buscarElProductoEnSupermercado: Pseleccionado."
+		prod := s buscarElProductoEnSupermercado: Pseleccionado.
+		carrito CargarProductoAcarrito:prod.
+		"carrito verProductosEnCarrito."
+		Transcript clear.
+		].].
+			menu = '2' ifTrue: [ carrito verCarrito inspect ].
+			menu = '3' ifTrue: [ Prompter prompt: '3' ].
+			menu = '4' ifTrue: [ Prompter prompt: '4'].
+Transcript clear.
+s llamarMenuPrincipal.
+menu:= Prompter prompt:'Ingrese un numero'.
+].!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+
+
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+
+
+s listarProductosDisponible .!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+
+
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+
+
+s listarProductosDisponible .!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+"carrito:=CarritodeCompras."
+Transcript clear.
+s verClientes .
+ClienteSeleecionado:= Prompter prompt: 'Seleccione un cliente'.
+Transcript clear.
+s LLamarMenuPrincipal.
+carrito:= CarritodeCompras crearCarrito: ClienteSeleecionado.
+
+s listarProductosDisponible .
+!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+"carrito:=CarritodeCompras."
+Transcript clear.
+s verClientes .
+ClienteSeleecionado:= Prompter prompt: 'Seleccione un cliente'.
+Transcript clear.
+s llamarMenuPrincipal.
+carrito:= CarritodeCompras crearCarrito: ClienteSeleecionado.
+
+s listarProductosDisponible .!
+
+!CarritodeCompras class methodsFor!
+crearCarrito:idcliente
+^(self new) iniCarrito: idcliente.! !
+!CarritodeCompras class categoriesFor: #crearCarrito:!public! !
+
+!CarritodeCompras class methodsFor!
+crearCarrito:idcliente
+^(self new) iniCarrito: idcliente.! !
+!CarritodeCompras class categoriesFor: #crearCarrito:!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+"carrito:=CarritodeCompras."
+Transcript clear.
+s verClientes .
+ClienteSeleecionado:= Prompter prompt: 'Seleccione un cliente'.
+Transcript clear.
+s llamarMenuPrincipal.
+carrito:= CarritodeCompras crearCarrito: ClienteSeleecionado.!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+"carrito:=CarritodeCompras."
+Transcript clear.
+s verClientes .
+ClienteSeleecionado:= Prompter prompt: 'Seleccione un cliente'.
+Transcript clear.
+s llamarMenuPrincipal.
+carrito:= CarritodeCompras crearCarrito: ClienteSeleecionado.
+
+s listarProductosDisponible .!
+
+"17:27:41, 04 July 2021: Image saved"!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+"carrito:=CarritodeCompras."
+Transcript clear.
+s verClientes .
+ClienteSeleecionado:= Prompter prompt: 'Seleccione un cliente'.
+Transcript clear.
+s llamarMenuPrincipal.
+carrito:= CarritodeCompras crearCarrito: ClienteSeleecionado.
+
+s listarProductosDisponible .
+
+
+menu:= Prompter prompt:'Ingrese un opcion'.
+
+[menu~='0'] whileTrue:[
+		Transcript clear.
+		s LLamarMenuPrincipal.
+			menu = '1' ifTrue: [ Transcript clear.
+		s listarProductosDisponible .
+		[ Pseleccionado~='0'] whileTrue:[
+					Transcript clear.
+					s listarProductos.
+					Pseleccionado:= Prompter prompt: 'Ingrese una opcion, 0 para salir y proceder con 	la compra'.
+					Transcript show:'----------------------------------------------'.
+					
+		"s listarProductosCarritoIdentificador."
+		"s buscarElProductoEnSupermercado: Pseleccionado."
+		prod := s buscarElProductoEnSupermercado: Pseleccionado.
+		carrito CargarProductoAcarrito:prod.
+		"carrito verProductosEnCarrito."
+		Transcript clear.
+		].].
+			menu = '2' ifTrue: [ carrito verCarrito inspect ].
+			menu = '3' ifTrue: [ Prompter prompt: '3' ].
+			menu = '4' ifTrue: [ Prompter prompt: '4'].
+Transcript clear.
+s llamarMenuPrincipal.
+menu:= Prompter prompt:'Ingrese un numero'.
+].!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+"carrito:=CarritodeCompras."
+Transcript clear.
+s verClientes .
+ClienteSeleecionado:= Prompter prompt: 'Seleccione un cliente'.
+Transcript clear.
+s llamarMenuPrincipal.
+carrito:= CarritodeCompras crearCarrito: ClienteSeleecionado.
+
+s listarProductosDisponible .
+
+
+menu:= Prompter prompt:'Ingrese un opcion'.
+
+[menu~='0'] whileTrue:[
+		Transcript clear.
+		s LLamarMenuPrincipal.
+			menu = '1' ifTrue: [ Transcript clear.
+		s listarProductosDisponible .
+		[ Pseleccionado~='0'] whileTrue:[
+					Transcript clear.
+					s listarProductos.
+					Pseleccionado:= Prompter prompt: 'Ingrese una opcion, 0 para salir y proceder con 	la compra'.
+					Transcript show:'----------------------------------------------'.
+					
+		"s listarProductosCarritoIdentificador."
+		"s buscarElProductoEnSupermercado: Pseleccionado."
+		prod := s buscarElProductoEnSupermercado: Pseleccionado.
+		carrito CargarProductoAcarrito:prod.
+		"carrito verProductosEnCarrito."
+		Transcript clear.
+		].].
+			menu = '2' ifTrue: [ carrito verCarrito inspect ].
+			menu = '3' ifTrue: [ Prompter prompt: '3' ].
+			menu = '4' ifTrue: [ Prompter prompt: '4'].
+Transcript clear.
+s llamarMenuPrincipal.
+menu:= Prompter prompt:'Ingrese un numero'.
+].!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+"carrito:=CarritodeCompras."
+Transcript clear.
+s verClientes .
+ClienteSeleecionado:= Prompter prompt: 'Seleccione un cliente'.
+Transcript clear.
+s llamarMenuPrincipal.
+carrito:= CarritodeCompras crearCarrito: ClienteSeleecionado.
+
+s listarProductosDisponible .
+
+
+menu:= Prompter prompt:'Ingrese un opcion'.
+
+[menu~='0'] whileTrue:[
+		Transcript clear.
+		s llamarMenuPrincipal.
+			menu = '1' ifTrue: [ Transcript clear.
+		s listarProductosDisponible .
+		[ Pseleccionado~='0'] whileTrue:[
+					Transcript clear.
+					s listarProductos.
+					Pseleccionado:= Prompter prompt: 'Ingrese una opcion, 0 para salir y proceder con 	la compra'.
+					Transcript show:'----------------------------------------------'.
+					
+		"s listarProductosCarritoIdentificador."
+		"s buscarElProductoEnSupermercado: Pseleccionado."
+		prod := s buscarElProductoEnSupermercado: Pseleccionado.
+		carrito CargarProductoAcarrito:prod.
+		"carrito verProductosEnCarrito."
+		Transcript clear.
+		].].
+			menu = '2' ifTrue: [ carrito verCarrito inspect ].
+			menu = '3' ifTrue: [ Prompter prompt: '3' ].
+			menu = '4' ifTrue: [ Prompter prompt: '4'].
+Transcript clear.
+s llamarMenuPrincipal.
+menu:= Prompter prompt:'Ingrese un numero'.
+].!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+"carrito:=CarritodeCompras."
+Transcript clear.
+s verClientes .
+ClienteSeleecionado:= Prompter prompt: 'Seleccione un cliente'.
+Transcript clear.
+s llamarMenuPrincipal.
+carrito:= CarritodeCompras crearCarrito: ClienteSeleecionado.
+
+s listarProductosDisponible .
+
+
+menu:= Prompter prompt:'Ingrese un opcion'.
+
+[menu~='0'] whileTrue:[
+		Transcript clear.
+		s llamarMenuPrincipal.
+			menu = '1' ifTrue: [ Transcript clear.
+		s listarProductosDisponible .
+		[ Pseleccionado~='0'] whileTrue:[
+					Transcript clear.
+					s listarProductos.
+					Pseleccionado:= Prompter prompt: 'Ingrese una opcion, 0 para salir y proceder con 	la compra'.
+					Transcript show:'----------------------------------------------'.
+					
+		"s listarProductosCarritoIdentificador."
+		"s buscarElProductoEnSupermercado: Pseleccionado."
+		prod := s buscarElProductoEnSupermercado: Pseleccionado.
+		carrito CargarProductoAcarrito:prod.
+		"carrito verProductosEnCarrito."
+		Transcript clear.
+		].].
+			menu = '2' ifTrue: [ carrito verCarrito inspect ].
+			menu = '3' ifTrue: [ Prompter prompt: '3' ].
+			menu = '4' ifTrue: [ Prompter prompt: '4'].
+Transcript clear.
+s llamarMenuPrincipal.
+menu:= Prompter prompt:'Ingrese un numero'.
+].!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+"carrito:=CarritodeCompras."
+Transcript clear.
+s verClientes .
+ClienteSeleecionado:= Prompter prompt: 'Seleccione un cliente'.
+Transcript clear.
+s llamarMenuPrincipal.
+carrito:= CarritodeCompras crearCarrito: ClienteSeleecionado.
+
+s listarProductosDisponible .
+
+
+menu:= Prompter prompt:'Ingrese un opcion'.
+
+[menu~='0'] whileTrue:[
+		Transcript clear.
+		s llamarMenuPrincipal.
+			menu = '1' ifTrue: [ Transcript clear.
+		s listarProductosDisponible .
+		[ Pseleccionado~='0'] whileTrue:[
+					Transcript clear.
+					s listarProductos.
+					Pseleccionado:= Prompter prompt: 'Ingrese una opcion, 0 para salir y proceder con 	la compra'.
+					Transcript show:'----------------------------------------------'.
+					
+		"s listarProductosCarritoIdentificador."
+		"s buscarElProductoEnSupermercado: Pseleccionado."
+		prod := s buscarElProductoEnSupermercado: Pseleccionado.
+		carrito CargarProductoAcarrito:prod.
+		"carrito verProductosEnCarrito."
+		Transcript clear.
+		].].
+			menu = '2' ifTrue: [ carrito verCarrito inspect ].
+			menu = '3' ifTrue: [ Prompter prompt: '3' ].
+			menu = '4' ifTrue: [ Prompter prompt: '4'].
+Transcript clear.
+s llamarMenuPrincipal.
+menu:= Prompter prompt:'Ingrese un numero'.
+].!
+
+!CarritodeCompras methodsFor!
+verCarrito
+^listadeProducto.! !
+!CarritodeCompras categoriesFor: #verCarrito!public! !
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+"carrito:=CarritodeCompras."
+Transcript clear.
+s verClientes .
+ClienteSeleecionado:= Prompter prompt: 'Seleccione un cliente'.
+Transcript clear.
+s llamarMenuPrincipal.
+carrito:= CarritodeCompras crearCarrito: ClienteSeleecionado.
+
+s listarProductosDisponible .
+
+
+menu:= Prompter prompt:'Ingrese un opcion'.
+
+[menu~='0'] whileTrue:[
+		Transcript clear.
+		s llamarMenuPrincipal.
+			menu = '1' ifTrue: [ Transcript clear.
+		s listarProductosDisponible .
+		[ Pseleccionado~='0'] whileTrue:[
+					Transcript clear.
+					s listarProductos.
+					Pseleccionado:= Prompter prompt: 'Ingrese una opcion, 0 para salir y proceder con 	la compra'.
+					Transcript show:'----------------------------------------------'.
+					
+		"s listarProductosCarritoIdentificador."
+		"s buscarElProductoEnSupermercado: Pseleccionado."
+		prod := s buscarElProductoEnSupermercado: Pseleccionado.
+		carrito CargarProductoAcarrito:prod.
+		"carrito verProductosEnCarrito."
+		Transcript clear.
+		].].
+			menu = '2' ifTrue: [ carrito verCarrito inspect ].
+			menu = '3' ifTrue: [ Prompter prompt: '3' ].
+			menu = '4' ifTrue: [ Prompter prompt: '4'].
+Transcript clear.
+s llamarMenuPrincipal.
+menu:= Prompter prompt:'Ingrese un numero'.
+].!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+"carrito:=CarritodeCompras."
+Transcript clear.
+s verClientes .
+ClienteSeleecionado:= Prompter prompt: 'Seleccione un cliente'.
+Transcript clear.
+s llamarMenuPrincipal.
+carrito:= CarritodeCompras crearCarrito: ClienteSeleecionado.
+
+s listarProductosDisponible .
+
+
+menu:= Prompter prompt:'Ingrese un opcion'.
+
+[menu~='0'] whileTrue:[
+		Transcript clear.
+		s llamarMenuPrincipal.
+			menu = '1' ifTrue: [ Transcript clear.
+		s listarProductosDisponible .
+		[ Pseleccionado~='0'] whileTrue:[
+					Transcript clear.
+					s listarProductos.
+					Pseleccionado:= Prompter prompt: 'Ingrese una opcion, 0 para salir y proceder con 	la compra'.
+					Transcript show:'----------------------------------------------'.
+					
+		"s listarProductosCarritoIdentificador."
+		"s buscarElProductoEnSupermercado: Pseleccionado."
+		prod := s buscarElProductoEnSupermercado: Pseleccionado.
+		carrito CargarProductoAcarrito:prod.
+		"carrito verProductosEnCarrito."
+		Transcript clear.
+		].].
+			menu = '2' ifTrue: [ carrito verCarrito inspect ].
+			menu = '3' ifTrue: [ Prompter prompt: '3' ].
+			menu = '4' ifTrue: [ Prompter prompt: '4'].
+Transcript clear.
+s llamarMenuPrincipal.
+menu:= Prompter prompt:'Ingrese un numero'.
+].!
+
+"17:36:53, 04 July 2021: Image saved"!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+"carrito:=CarritodeCompras."
+Transcript clear.
+s verClientes .
+ClienteSeleecionado:= Prompter prompt: 'Seleccione un cliente'.
+Transcript clear.
+s llamarMenuPrincipal.
+carrito:= CarritodeCompras crearCarrito: ClienteSeleecionado.
+
+s listarProductosDisponible .
+
+
+menu:= Prompter prompt:'Ingrese un opcion'.
+
+[menu~='0'] whileTrue:[
+		Transcript clear.
+		s llamarMenuPrincipal.
+			menu = '1' ifTrue: [ Transcript clear.
+		s listarProductosDisponible .
+		[ Pseleccionado~='0'] whileTrue:[
+					Transcript clear.
+					s listarProductosDisponible .
+					Pseleccionado:= Prompter prompt: 'Ingrese una opcion, 0 para salir y proceder con 	la compra'.
+					Transcript show:'----------------------------------------------'.
+					
+		"s listarProductosCarritoIdentificador."
+		"s buscarElProductoEnSupermercado: Pseleccionado."
+		prod := s buscarElProductoEnSupermercado: Pseleccionado.
+		carrito CargarProductoAcarrito:prod.
+		"carrito verProductosEnCarrito."
+		Transcript clear.
+		].].
+			menu = '2' ifTrue: [ carrito verCarrito inspect ].
+			menu = '3' ifTrue: [ Prompter prompt: '3' ].
+			menu = '4' ifTrue: [ Prompter prompt: '4'].
+Transcript clear.
+s llamarMenuPrincipal.
+menu:= Prompter prompt:'Ingrese un numero'.
+].!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+"carrito:=CarritodeCompras."
+Transcript clear.
+s verClientes .
+ClienteSeleecionado:= Prompter prompt: 'Seleccione un cliente'.
+Transcript clear.
+s llamarMenuPrincipal.
+carrito:= CarritodeCompras crearCarrito: ClienteSeleecionado.
+
+s listarProductosDisponible .
+
+
+menu:= Prompter prompt:'Ingrese un opcion'.
+
+[menu~='0'] whileTrue:[
+		Transcript clear.
+		s llamarMenuPrincipal.
+			menu = '1' ifTrue: [ Transcript clear.
+		s listarProductosDisponible .
+		[ Pseleccionado~='0'] whileTrue:[
+					Transcript clear.
+					s listarProductosDisponible .
+					Pseleccionado:= Prompter prompt: 'Ingrese una opcion, 0 para salir y proceder con 	la compra'.
+					Transcript show:'----------------------------------------------'.
+					
+		"s listarProductosCarritoIdentificador."
+		"s buscarElProductoEnSupermercado: Pseleccionado."
+		prod := s buscarElProductoEnSupermercado: Pseleccionado.
+		carrito CargarProductoAcarrito:prod.
+		"carrito verProductosEnCarrito."
+		Transcript clear.
+		].].
+			menu = '2' ifTrue: [ carrito verCarrito inspect ].
+			menu = '3' ifTrue: [ Prompter prompt: '3' ].
+			menu = '4' ifTrue: [ Prompter prompt: '4'].
+Transcript clear.
+s llamarMenuPrincipal.
+menu:= Prompter prompt:'Ingrese un numero'.
+].!
+
+"17:39:29, 04 July 2021: Image saved"!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+"carrito:=CarritodeCompras."
+Transcript clear.
+s verClientes .
+ClienteSeleecionado:= Prompter prompt: 'Seleccione un cliente'.
+Transcript clear.
+s llamarMenuPrincipal.
+carrito:= CarritodeCompras crearCarrito: ClienteSeleecionado.
+
+s listarProductosDisponible .
+
+
+menu:= Prompter prompt:'Ingrese un opcion'.
+
+[menu~='0'] whileTrue:[
+		Transcript clear.
+		s llamarMenuPrincipal.
+			menu = '1' ifTrue: [ Transcript clear.
+		s listarProductosDisponible .
+		[ Pseleccionado~='0'] whileTrue:[
+					Transcript clear.
+					s listarProductosDisponible .
+					Pseleccionado:= Prompter prompt: 'Ingrese una opcion, 0 para salir y proceder con 	la compra'.
+					Transcript show:'----------------------------------------------'.
+					
+		"s listarProductosCarritoIdentificador."
+		"s buscarElProductoEnSupermercado: Pseleccionado."
+		prod := s buscarElProductoEnSupermercado: Pseleccionado.
+		carrito CargarProductoAcarrito:prod.
+		"carrito verProductosEnCarrito."
+		Transcript clear.
+		].].
+			menu = '2' ifTrue: [ carrito verCarrito inspect ].
+			menu = '3' ifTrue: [ Prompter prompt: '3' ].
+			menu = '4' ifTrue: [ Prompter prompt: '4'].
+Transcript clear.
+s llamarMenuPrincipal.
+menu:= Prompter prompt:'Ingrese un numero o 0 para salir'.
+].!
+
+|s a  c e p productoa productob menu carrito unid prod idproducto Pseleccionado ClienteSeleecionado|
+s:= Supermercado crearSuperNom:'sunshine'.
+c:= Cliente crearPersonaCliente: 1 nom: 'Leandro' ape: 'Oviedo' id:'1'.
+s agregarCliente: c.
+c:= Cliente crearPersonaCliente: 2 nom: 'Pedro' ape: 'Ramos' id:'2'.
+s agregarCliente: c.
+e:= Empleado crearPersonaEmpleado: 20 nom: 'Javier' ape: 'Sanches' pues: 'Cajero' sal: 20000.
+s agregarEmpleado: e.
+e:= Empleado crearPersonaEmpleado: 21 nom: 'ramon' ape: 'Peralta' pues: 'Playero' sal: 22000.
+s agregarEmpleado: e.
+p:= Producto crearProducto: '1' nombre: 'Manteca' precioUnitario: 20 stock: 30.
+s agregarProductoSupermercado: p.
+p:= Producto crearProducto: '2' nombre: 'Arroz' precioUnitario: 30 stock: 20.
+s agregarProductoSupermercado: p.
+productoa :=Producto crearProducto: '3' nombre: 'Leche' precioUnitario: 45 stock: 2.
+s agregarProductoSupermercado: productoa.
+productob :=Producto crearProducto: '4' nombre: ' Cereal' precioUnitario: 62 stock: 2.
+s agregarProductoSupermercado: productob.
+"carrito:=CarritodeCompras."
+Transcript clear.
+s verClientes .
+ClienteSeleecionado:= Prompter prompt: 'Seleccione un cliente'.
+Transcript clear.
+s llamarMenuPrincipal.
+carrito:= CarritodeCompras crearCarrito: ClienteSeleecionado.
+
+s listarProductosDisponible .
+
+
+menu:= Prompter prompt:'Ingrese un opcion'.
+
+[menu~='0'] whileTrue:[
+		Transcript clear.
+		s llamarMenuPrincipal.
+			menu = '1' ifTrue: [ Transcript clear.
+		s listarProductosDisponible .
+		[ Pseleccionado~='0'] whileTrue:[
+					Transcript clear.
+					s listarProductosDisponible .
+					Pseleccionado:= Prompter prompt: 'Ingrese una opcion, 0 para salir y proceder con 	la compra'.
+					Transcript show:'----------------------------------------------'.
+					
+		"s listarProductosCarritoIdentificador."
+		"s buscarElProductoEnSupermercado: Pseleccionado."
+		prod := s buscarElProductoEnSupermercado: Pseleccionado.
+		carrito CargarProductoAcarrito:prod.
+		"carrito verProductosEnCarrito."
+		Transcript clear.
+		].].
+			menu = '2' ifTrue: [ carrito verCarrito inspect ].
+			menu = '3' ifTrue: [ Prompter prompt: '3' ].
+			menu = '4' ifTrue: [ Prompter prompt: '4'].
+Transcript clear.
+s llamarMenuPrincipal.
+menu:= Prompter prompt:'Ingrese un numero , 0 para salir'.
+].!
+
