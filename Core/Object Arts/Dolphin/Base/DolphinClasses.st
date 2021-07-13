@@ -51,7 +51,7 @@ Object subclass: #ByteCodeDispatcher
 	poolDictionaries: 'OpcodePool'
 	classInstanceVariableNames: ''!
 Object subclass: #CarritodeCompras
-	instanceVariableNames: 'listadeProducto precioTotal datosdeSupermercado idpersona'
+	instanceVariableNames: 'listadeProducto idpersona'
 	classVariableNames: ''
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!
@@ -356,7 +356,7 @@ Object subclass: #Stream
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!
 Object subclass: #Supermercado
-	instanceVariableNames: 'nombre clientes empleados productos facturas'
+	instanceVariableNames: 'nombre clientes empleados productos carritos'
 	classVariableNames: ''
 	poolDictionaries: ''
 	classInstanceVariableNames: ''!

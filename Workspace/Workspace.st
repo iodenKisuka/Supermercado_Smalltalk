@@ -24,7 +24,7 @@ Transcript clear.
 s llamarMenuPrincipal.
 carrito:= CarritodeCompras crearCarrito: ClienteSeleecionado.
 
-s listarProductosDisponible .
+"s listarProductosDisponible ."
 
 
 menu:= Prompter prompt:'Ingrese un opcion'.
@@ -38,19 +38,21 @@ menu:= Prompter prompt:'Ingrese un opcion'.
 					Transcript clear.
 					s listarProductosDisponible .
 					Pseleccionado:= Prompter prompt: 'Ingrese una opcion, 0 para salir y proceder con 	la compra'.
-					Transcript show:'----------------------------------------------'.
+					Transcript show:'----------------------------------------------';cr.
 					
 		"s listarProductosCarritoIdentificador."
 		"s buscarElProductoEnSupermercado: Pseleccionado."
-		prod := s buscarElProductoEnSupermercado: Pseleccionado.
-		carrito CargarProductoAcarrito:prod.
+Pseleccionado~='0' ifTrue: [
+		 prod := s buscarElProductoEnSupermercado: Pseleccionado.
+		carrito cargarProductoAcarrito:prod. ].
 		"carrito verProductosEnCarrito."
 		Transcript clear.
 		].].
-			menu = '2' ifTrue: [ carrito verCarrito inspect ].
+			menu = '2' ifTrue: [ carrito listarCarrito ].
 			menu = '3' ifTrue: [ Prompter prompt: '3' ].
 			menu = '4' ifTrue: [ Prompter prompt: '4'].
 Transcript clear.
 s llamarMenuPrincipal.
-menu:= Prompter prompt:'Ingrese un numero o 0 para salir'.
+menu:= Prompter prompt:'Ingrese un numero , 0 para salir'.
 ].
+
